@@ -1,6 +1,6 @@
 {
   "name": "@sercanuste/ngx-datatable",
-  "version": "13.0.1",
+  "version": "1.0.0",
   "description": "ngx-datatable is a Angular2+ table grid component for presenting large and complex data.",
   "main": "release/index.js",
   "typings": "release/index.d.ts",
@@ -59,7 +59,7 @@
     "grid",
     "table"
   ],
-  "author": "",
+  "author": "sercanuste <sercanuste@hotmail.com>",
   "license": "MIT",
   "bugs": {
     "url": "https://github.com/sercanuste/ngx-datatable/issues"
@@ -137,5 +137,10 @@
     "webpack-merge": "^4.1.1",
     "webpack-notifier": "^1.5.0",
     "zone.js": "^0.8.26"
-  }
+  },
+  "directories": {
+    "doc": "docs",
+    "test": "test"
+  },
+  "dependencies": {}
 }
