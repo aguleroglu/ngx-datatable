@@ -16,6 +16,7 @@ export type TreeStatus = 'collapsed' | 'expanded' | 'loading' | 'disabled';
   selector: 'datatable-body-cell',
   changeDetection: ChangeDetectionStrategy.OnPush,
   template: `
+    <div class="datatable-mobile-title"><b>{{ column.name }}</b></div>
     <div class="datatable-body-cell-label"
       [style.margin-left.px]="calcLeftMargin(column, row)">
       <label
