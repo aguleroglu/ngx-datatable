@@ -284,6 +284,26 @@
     opacity: 0;
     transform: translateX(-50%) scale(0, 1); } }
 
+.datatable-row-wrapper .datatable-body-row .datatable-body-cell {
+  position: relative;
+  overflow: visible !important; }
+  .datatable-row-wrapper .datatable-body-row .datatable-body-cell .datatable-cell-hover {
+    display: none;
+    position: absolute;
+    top: 101%;
+    left: 0;
+    z-index: 99999;
+    width: 100%;
+    padding: 10px;
+    background: #eeeeee;
+    border: 1px solid #dee2e6; }
+  .datatable-row-wrapper .datatable-body-row .datatable-body-cell:hover .datatable-cell-hover {
+    display: block; }
+
+.datatable-row-wrapper:last-child .datatable-body-row .datatable-body-cell .datatable-cell-hover {
+  top: auto;
+  bottom: 101%; }
+
 .datatable-mobile-title {
   display: none; }
 
