@@ -44,7 +44,8 @@
     "e2e:server": "http-server dist -p 8888",
     "preprotractor": "npm run webdriver:update",
     "protractor": "protractor",
-    "webdriver:update": "webdriver-manager update"
+    "webdriver:update": "webdriver-manager update",
+    "sercan": "npm-run-all clean build:release build:package package"
   },
   "repository": {
     "type": "git",
