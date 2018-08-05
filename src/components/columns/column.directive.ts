@@ -1,6 +1,7 @@
 import { Directive, TemplateRef, ContentChild, Input, OnChanges, SimpleChanges } from '@angular/core';
 import { DataTableColumnHeaderDirective } from './column-header.directive';
 import { DataTableColumnCellDirective } from './column-cell.directive';
+import { DataTableColumnCellHoverDirective } from './column-cell-hover.directive';
 import {
   DataTableColumnCellTreeToggle
 } from './tree.directive';
@@ -36,6 +37,10 @@ export class DataTableColumnDirective implements OnChanges {
   @Input()
   @ContentChild(DataTableColumnCellDirective, { read: TemplateRef })
   cellTemplate: TemplateRef<any>;
+  
+  @Input()
+  @ContentChild(DataTableColumnCellHoverDirective, { read: TemplateRef })
+  cellHoverTemplate: TemplateRef<any>;
 
   @Input()
   @ContentChild(DataTableColumnHeaderDirective, { read: TemplateRef })

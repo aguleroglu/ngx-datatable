@@ -64,7 +64,8 @@ export class DataTableSummaryRowComponent implements OnChanges {
   private updateInternalColumns() {
     this._internalColumns = this.columns.map(col => ({
       ...col,
-      cellTemplate: col.summaryTemplate
+      cellTemplate: col.summaryTemplate,
+      cellHoverTemplate: col.summaryTemplate
     }));
   }
 

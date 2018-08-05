@@ -59,6 +59,11 @@ export type TreeStatus = 'collapsed' | 'expanded' | 'loading' | 'disabled';
         [ngTemplateOutlet]="column.cellTemplate"
         [ngTemplateOutletContext]="cellContext">
       </ng-template>
+      <ng-template #cellHoverTemplate
+        *ngIf="column.cellHoverTemplate"
+        [ngTemplateOutlet]="column.cellHoverTemplate"
+        [ngTemplateOutletContext]="cellContext">
+      </ng-template>
     </div>
   `
 })
@@ -172,6 +177,7 @@ export class DataTableBodyCellComponent implements DoCheck, OnDestroy {
   @Output() treeAction: EventEmitter<any> = new EventEmitter();
 
   @ViewChild('cellTemplate', { read: ViewContainerRef }) cellTemplate: ViewContainerRef;
+  @ViewChild('cellHoverTemplate', { read: ViewContainerRef }) cellHoverTemplate: ViewContainerRef;
 
   @HostBinding('class')
   get columnCssClasses(): any {
@@ -271,6 +277,10 @@ export class DataTableBodyCellComponent implements DoCheck, OnDestroy {
   ngOnDestroy(): void {
     if (this.cellTemplate) {
       this.cellTemplate.clear();
+    }
+
+    if (this.cellHoverTemplate) {
+      this.cellHoverTemplate.clear();
     }
   }
 

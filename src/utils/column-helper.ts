@@ -101,6 +101,10 @@ export function translateTemplates(templates: DataTableColumnDirective[]): any[]
       col.cellTemplate = temp.cellTemplate;
     }
 
+    if(temp.cellHoverTemplate) {
+      col.cellHoverTemplate = temp.cellHoverTemplate;
+    }
+
     if(temp.summaryFunc) {
       col.summaryFunc = temp.summaryFunc;
     }

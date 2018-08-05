@@ -174,6 +174,14 @@ export interface TableColumn {
   cellTemplate?: any;
 
   /**
+   * Cell hover template ref
+   *
+   * @type {*}
+   * @memberOf TableColumn
+   */
+  cellHoverTemplate?: any;
+
+  /**
    * Header template ref
    *
    * @type {*}
