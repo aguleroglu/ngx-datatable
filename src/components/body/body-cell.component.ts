@@ -59,11 +59,14 @@ export type TreeStatus = 'collapsed' | 'expanded' | 'loading' | 'disabled';
         [ngTemplateOutlet]="column.cellTemplate"
         [ngTemplateOutletContext]="cellContext">
       </ng-template>
-      <ng-template #cellHoverTemplate
-        *ngIf="column.cellHoverTemplate"
-        [ngTemplateOutlet]="column.cellHoverTemplate"
-        [ngTemplateOutletContext]="cellContext">
-      </ng-template>
+      <div *ngIf="column.cellHoverTemplate">
+        <div class="datatable-cell-hover">
+          <ng-template #cellHoverTemplate
+            [ngTemplateOutlet]="column.cellHoverTemplate"
+            [ngTemplateOutletContext]="cellContext">
+          </ng-template>
+        </div>
+      </div>
     </div>
   `
 })
