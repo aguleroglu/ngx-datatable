@@ -100,4 +100,43 @@ bootstrap table theme
   }
 }
 
+.datatable-row-wrapper {
+  .datatable-body-row {
+      .datatable-body-cell {
+          position: relative;
+          overflow: visible !important;
+
+          .datatable-cell-hover {
+              display: none;
+
+              position: absolute;
+              top: 101%;
+              left: 0;
+              z-index: 99999;
+              width: 100%;
+              padding: 10px;
+              background: #eeeeee;
+              border: 1px solid #dee2e6;
+          }
+
+          &:hover {
+              .datatable-cell-hover {
+                  display: block;
+              }
+          }
+      }
+  }
+
+  &:last-child {
+      .datatable-body-row {
+          .datatable-body-cell {
+              .datatable-cell-hover {
+                  top: auto;
+                  bottom: 101%;
+              }
+          }
+      }
+  }
+}
+
 @import "responsive";
