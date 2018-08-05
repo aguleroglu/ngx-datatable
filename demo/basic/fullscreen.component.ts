@@ -22,7 +22,9 @@ import { Component } from '@angular/core';
         [scrollbarV]="true"
         [scrollbarH]="true"
         [rows]="rows">
-        <ngx-datatable-column name="Id" [width]="80"></ngx-datatable-column>
+        <ngx-datatable-column name="Id" [width]="80"><ng-template let-value="value" ngx-datatable-cell-hover-template>
+        {{value}}
+</ng-template></ngx-datatable-column>
         <ngx-datatable-column name="Name" [width]="300"></ngx-datatable-column>
         <ngx-datatable-column name="Gender"></ngx-datatable-column>
         <ngx-datatable-column name="Age"></ngx-datatable-column>
