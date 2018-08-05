@@ -45,7 +45,7 @@
     "preprotractor": "npm run webdriver:update",
     "protractor": "protractor",
     "webdriver:update": "webdriver-manager update",
-    "sercan": "npm-run-all clean build:release build:package package"
+    "sercan": "npm-run-all clean build:release build:package package && git add -A && git commit -m \"package\" && git push && git push --tags && npm version patch"
   },
   "repository": {
     "type": "git",
