@@ -225,6 +225,9 @@
       float: right;
       width: 65px;
       min-width: 57px; }
+    .ngx-datatable.material .datatable-footer .datatable-export-button {
+      margin: 10px;
+      height: 33px; }
   .ngx-datatable.material .datatable-summary-row .datatable-body-row {
     background-color: #ddd; }
     .ngx-datatable.material .datatable-summary-row .datatable-body-row:hover {

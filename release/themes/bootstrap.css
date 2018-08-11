@@ -68,6 +68,9 @@ bootstrap table theme
       float: right;
       width: 65px;
       min-width: 57px; }
+    .ngx-datatable.bootstrap .datatable-footer .datatable-export-button {
+      margin: 10px;
+      height: 33px; }
   .ngx-datatable.bootstrap .datatable-summary-row .datatable-body-row .datatable-body-cell {
     font-weight: bold; }
 

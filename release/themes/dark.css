@@ -72,6 +72,9 @@
       float: right;
       width: 65px;
       min-width: 57px; }
+    .ngx-datatable.dark .datatable-footer .datatable-export-button {
+      margin: 10px;
+      height: 33px; }
   .ngx-datatable.dark .datatable-summary-row .datatable-body-row {
     background-color: #14171f; }
     .ngx-datatable.dark .datatable-summary-row .datatable-body-row:hover {
