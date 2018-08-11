@@ -98,7 +98,7 @@ import { BehaviorSubject, Subscription } from 'rxjs';
         [footerHeight]="footerHeight"
         [footerTemplate]="footer"
         [totalMessage]="messages.totalMessage"
-        [excelMessage]="messages.excelMessage"
+        [exportMessage]="messages.exportMessage"
         [pagerLeftArrowIcon]="cssClasses.pagerLeftArrow"
         [pagerRightArrowIcon]="cssClasses.pagerRightArrow"
         [pagerPreviousIcon]="cssClasses.pagerPrevious"
@@ -398,7 +398,7 @@ export class DatatableComponent implements OnInit, DoCheck, AfterViewInit {
    *
    * emptyMessage     [default] = 'No data to display'
    * totalMessage     [default] = 'Total'
-   * excelMessage     [default] = 'Excel'
+   * exportMessage     [default] = 'Export'
    * selectedMessage  [default] = 'selected'
    */
   @Input() messages: any = {
@@ -410,7 +410,7 @@ export class DatatableComponent implements OnInit, DoCheck, AfterViewInit {
     totalMessage: 'Total',
 
     // Footer excel message
-    excelMessage: 'Excel',
+    exportMessage: 'Export',
 
     // Footer selected message
     selectedMessage: 'selected'

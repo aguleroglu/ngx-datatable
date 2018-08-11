@@ -66,7 +66,7 @@ describe('DataTableFooterComponent', () => {
       component.selectedCount = 7;
       component.rowCount = 10;
       component.totalMessage = 'Total';
-      component.excelMessage = 'Excel';
+      component.exportMessage = 'Export';
       page.detectChangesAndRunQueries();
 
       expect(page.pageCount.nativeElement.innerText).toEqual(
@@ -79,7 +79,7 @@ describe('DataTableFooterComponent', () => {
       component.selectedMessage = undefined;
       component.rowCount = 100;
       component.totalMessage = 'Total';
-      component.excelMessage = 'Excel';
+      component.exportMessage = 'Export';
       page.detectChangesAndRunQueries();
 
       expect(page.pageCount.nativeElement.innerText).toEqual('Total: 100');
@@ -245,7 +245,7 @@ describe('DataTableFooterComponent', () => {
       [footerHeight]="footerHeight"
       [footerTemplate]="footerTemplate"
       [totalMessage]="totalMessage"
-      [excelMessage]="excelMessage"
+      [exportMessage]="exportMessage"
       [pagerLeftArrowIcon]="pagerLeftArrowIcon"
       [pagerRightArrowIcon]="pagerRightArrowIcon"
       [pagerPreviousIcon]="pagerPreviousIcon"
@@ -284,7 +284,7 @@ class TestFixtureComponent {
   pagerPreviousIcon: string;
   pagerNextIcon: string;
   totalMessage: string;
-  excelMessage: string;
+  exportMessage: string;
   footerTemplate: { template: TemplateRef<any> };
   selectedCount: number;
   selectedMessage: string;

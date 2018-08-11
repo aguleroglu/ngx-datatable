@@ -19,7 +19,7 @@ import { DatatableFooterDirective } from './footer.directive';
         }">
       </ng-template>
       <div class="btn-group" role="group" style="padding:5px;" aria-label="" *ngIf="!footerTemplate">
-          <button type="button" class="btn btn-secondary" [innerHTML]="excelMessage" (click)="onExport({type:'XLSX'})"></button>
+          <button type="button" class="btn btn-secondary" [innerHTML]="exportMessage" (click)="onExport({type:'XLSX'})"></button>
       </div>
       <div class="page-count" *ngIf="!footerTemplate">
         {{ totalMessage }}: {{ rowCount?.toLocaleString() }}
@@ -59,7 +59,7 @@ export class DataTableFooterComponent {
   @Input() pagerPreviousIcon: string;
   @Input() pagerNextIcon: string;
   @Input() totalMessage: string;
-  @Input() excelMessage: string;
+  @Input() exportMessage: string;
   @Input() footerTemplate: DatatableFooterDirective;
 
   @Input() selectedCount: number = 0;
