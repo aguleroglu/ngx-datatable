@@ -24,6 +24,10 @@ var DatatableFooterDirective = /** @class */ (function () {
     ], DatatableFooterDirective.prototype, "totalMessage", void 0);
     __decorate([
         core_1.Input(),
+        __metadata("design:type", String)
+    ], DatatableFooterDirective.prototype, "excelMessage", void 0);
+    __decorate([
+        core_1.Input(),
         __metadata("design:type", Object)
     ], DatatableFooterDirective.prototype, "selectedMessage", void 0);
     __decorate([

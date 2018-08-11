@@ -2,6 +2,7 @@ import { TemplateRef } from '@angular/core';
 export declare class DatatableFooterDirective {
     footerHeight: number;
     totalMessage: string;
+    excelMessage: string;
     selectedMessage: string | boolean;
     pagerLeftArrowIcon: string;
     pagerRightArrowIcon: string;

@@ -15,6 +15,8 @@ var DataTableFooterComponent = /** @class */ (function () {
     function DataTableFooterComponent() {
         this.selectedCount = 0;
         this.page = new core_1.EventEmitter();
+        this.pageSizeChange = new core_1.EventEmitter();
+        this.export = new core_1.EventEmitter();
     }
     Object.defineProperty(DataTableFooterComponent.prototype, "isVisible", {
         get: function () {
@@ -30,6 +32,19 @@ var DataTableFooterComponent = /** @class */ (function () {
         enumerable: true,
         configurable: true
     });
+    DataTableFooterComponent.prototype.onPageSizeChanged = function (event) {
+        this.pageSize = parseInt(event.target.value);
+        this.offset = 0;
+        this.pageSizeChange.emit({
+            count: this.rowCount,
+            pageSize: parseInt(event.target.value),
+            limit: parseInt(event.target.value),
+            offset: 0
+        });
+    };
+    DataTableFooterComponent.prototype.onExport = function (event) {
+        this.export.emit(event);
+    };
     __decorate([
         core_1.Input(),
         __metadata("design:type", Number)
@@ -46,6 +61,10 @@ var DataTableFooterComponent = /** @class */ (function () {
         core_1.Input(),
         __metadata("design:type", Number)
     ], DataTableFooterComponent.prototype, "offset", void 0);
+    __decorate([
+        core_1.Input(),
+        __metadata("design:type", Object)
+    ], DataTableFooterComponent.prototype, "limitOptions", void 0);
     __decorate([
         core_1.Input(),
         __metadata("design:type", String)
@@ -68,6 +87,10 @@ var DataTableFooterComponent = /** @class */ (function () {
     ], DataTableFooterComponent.prototype, "totalMessage", void 0);
     __decorate([
         core_1.Input(),
+        __metadata("design:type", String)
+    ], DataTableFooterComponent.prototype, "excelMessage", void 0);
+    __decorate([
+        core_1.Input(),
         __metadata("design:type", footer_directive_1.DatatableFooterDirective)
     ], DataTableFooterComponent.prototype, "footerTemplate", void 0);
     __decorate([
@@ -82,10 +105,18 @@ var DataTableFooterComponent = /** @class */ (function () {
         core_1.Output(),
         __metadata("design:type", core_1.EventEmitter)
     ], DataTableFooterComponent.prototype, "page", void 0);
+    __decorate([
+        core_1.Output(),
+        __metadata("design:type", core_1.EventEmitter)
+    ], DataTableFooterComponent.prototype, "pageSizeChange", void 0);
+    __decorate([
+        core_1.Output(),
+        __metadata("design:type", core_1.EventEmitter)
+    ], DataTableFooterComponent.prototype, "export", void 0);
     DataTableFooterComponent = __decorate([
         core_1.Component({
             selector: 'datatable-footer',
-            template: "\n    <div\n      class=\"datatable-footer-inner\"\n      [ngClass]=\"{'selected-count': selectedMessage}\"\n      [style.height.px]=\"footerHeight\">\n      <ng-template\n        *ngIf=\"footerTemplate\"\n        [ngTemplateOutlet]=\"footerTemplate.template\"\n        [ngTemplateOutletContext]=\"{ \n          rowCount: rowCount, \n          pageSize: pageSize, \n          selectedCount: selectedCount,\n          curPage: curPage,\n          offset: offset\n        }\">\n      </ng-template>\n      <div class=\"page-count\" *ngIf=\"!footerTemplate\">\n        <span *ngIf=\"selectedMessage\">\n          {{selectedCount?.toLocaleString()}} {{selectedMessage}} / \n        </span>\n        {{rowCount?.toLocaleString()}} {{totalMessage}}\n      </div>\n      <datatable-pager *ngIf=\"!footerTemplate\"\n        [pagerLeftArrowIcon]=\"pagerLeftArrowIcon\"\n        [pagerRightArrowIcon]=\"pagerRightArrowIcon\"\n        [pagerPreviousIcon]=\"pagerPreviousIcon\"\n        [pagerNextIcon]=\"pagerNextIcon\"\n        [page]=\"curPage\"\n        [size]=\"pageSize\"\n        [count]=\"rowCount\"\n        [hidden]=\"!isVisible\"\n        (change)=\"page.emit($event)\">\n      </datatable-pager>\n    </div>\n  ",
+            template: "\n    <div\n      class=\"datatable-footer-inner\"\n      [ngClass]=\"{'selected-count': selectedMessage}\"\n      [style.height.px]=\"footerHeight\">\n      <ng-template\n        *ngIf=\"footerTemplate\"\n        [ngTemplateOutlet]=\"footerTemplate.template\"\n        [ngTemplateOutletContext]=\"{ \n          rowCount: rowCount, \n          pageSize: pageSize, \n          selectedCount: selectedCount,\n          curPage: curPage,\n          offset: offset\n        }\">\n      </ng-template>\n      <div class=\"btn-group\" role=\"group\" style=\"padding:5px;\" aria-label=\"\" *ngIf=\"!footerTemplate\">\n          <button type=\"button\" class=\"btn btn-secondary\" [innerHTML]=\"excelMessage\" (click)=\"onExport({type:'XLSX'})\"></button>\n      </div>\n      <div class=\"page-count\" *ngIf=\"!footerTemplate\">\n        {{ totalMessage }}: {{ rowCount?.toLocaleString() }}\n      </div>\n      <select\n        (change)=\"onPageSizeChanged($event)\" \n        class=\"limit-select\">\n        <option *ngFor=\"let item of limitOptions\" value=\"{{ item.id }}\">{{ item.text }}</option>\n      </select>\n      <datatable-pager *ngIf=\"!footerTemplate\"\n        [pagerLeftArrowIcon]=\"pagerLeftArrowIcon\"\n        [pagerRightArrowIcon]=\"pagerRightArrowIcon\"\n        [pagerPreviousIcon]=\"pagerPreviousIcon\"\n        [pagerNextIcon]=\"pagerNextIcon\"\n        [page]=\"curPage\"\n        [size]=\"pageSize\"\n        [count]=\"rowCount\"\n        [hidden]=\"!isVisible\"\n        (change)=\"page.emit($event)\">\n      </datatable-pager>\n    </div>\n  ",
             host: {
                 class: 'datatable-footer'
             },

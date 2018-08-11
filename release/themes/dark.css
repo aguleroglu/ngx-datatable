@@ -38,7 +38,8 @@
     .ngx-datatable.dark .datatable-footer .page-count {
       line-height: 50px;
       height: 50px;
-      padding: 0 1.2rem; }
+      padding: 0 1.2rem;
+      text-align: center; }
     .ngx-datatable.dark .datatable-footer .datatable-pager {
       margin: 0 10px;
       vertical-align: top; }
@@ -67,6 +68,10 @@
         font-size: 18px;
         line-height: 27px;
         padding: 0 3px; }
+    .ngx-datatable.dark .datatable-footer .limit-select {
+      float: right;
+      width: 65px;
+      min-width: 57px; }
   .ngx-datatable.dark .datatable-summary-row .datatable-body-row {
     background-color: #14171f; }
     .ngx-datatable.dark .datatable-summary-row .datatable-body-row:hover {
@@ -149,9 +154,14 @@
       display: block !important;
       padding: 0 !important;
       text-align: center !important; }
-      .ngx-datatable.responsive datatable-footer .datatable-footer-inner > datatable-pager .pager li {
-        float: left;
-        vertical-align: top; }
+      .ngx-datatable.responsive datatable-footer .datatable-footer-inner > datatable-pager .pager {
+        display: inline-block !important; }
+        .ngx-datatable.responsive datatable-footer .datatable-footer-inner > datatable-pager .pager li {
+          float: left;
+          display: block; }
+    .ngx-datatable.responsive datatable-footer .datatable-footer-inner .limit-select .ui-select-container {
+      width: 50%;
+      margin: 0 25%; }
   .ngx-datatable.responsive .ngx-datatable .datatable-footer .datatable-pager .pager {
     display: inline-block !important; }
   .ngx-datatable.responsive .datatable-mobile-title {

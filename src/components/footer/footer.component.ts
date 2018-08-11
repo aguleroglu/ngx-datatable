@@ -78,7 +78,7 @@ export class DataTableFooterComponent {
     return this.offset + 1;
   }
   
-  onPageSizeChanged(event) {
+  onPageSizeChanged(event: any) {
     this.pageSize = parseInt(event.target.value);
     this.offset = 0;
 
@@ -90,7 +90,7 @@ export class DataTableFooterComponent {
     });
   }
 
-  onExport(event) {
+  onExport(event: any) {
     this.export.emit(event);
   }
 }

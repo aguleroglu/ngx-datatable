@@ -7,6 +7,7 @@ import { DataTableColumnDirective } from './columns';
 import { DatatableRowDetailDirective } from './row-detail';
 import { DatatableFooterDirective } from './footer';
 import { DataTableHeaderComponent } from './header';
+import { Angular5Csv } from 'angular5-csv/Angular5-csv';
 import { BehaviorSubject, Subscription } from 'rxjs';
 export declare class DatatableComponent implements OnInit, DoCheck, AfterViewInit {
     private scrollbarHelper;
@@ -95,6 +96,7 @@ export declare class DatatableComponent implements OnInit, DoCheck, AfterViewIni
      * the built-in basic sorting.
      */
     externalSorting: boolean;
+    limitOptions: any;
     /**
      * Gets the limit.
      */
@@ -102,7 +104,7 @@ export declare class DatatableComponent implements OnInit, DoCheck, AfterViewIni
      * The page size to be shown.
      * Default value: `undefined`
      */
-    limit: number | undefined;
+    limit: number | 10;
     /**
      * Gets the count.
      */
@@ -161,7 +163,8 @@ export declare class DatatableComponent implements OnInit, DoCheck, AfterViewIni
      * Message overrides for localization
      *
      * emptyMessage     [default] = 'No data to display'
-     * totalMessage     [default] = 'total'
+     * totalMessage     [default] = 'Total'
+     * excelMessage     [default] = 'Excel'
      * selectedMessage  [default] = 'selected'
      */
     messages: any;
@@ -241,6 +244,8 @@ export declare class DatatableComponent implements OnInit, DoCheck, AfterViewIni
      * A property holds a summary row position: top/bottom
      */
     summaryPosition: string;
+    exportTitle: string;
+    exportOptions: any;
     /**
      * Body was scrolled typically in a `scrollbarV:true` scenario.
      */
@@ -283,6 +288,7 @@ export declare class DatatableComponent implements OnInit, DoCheck, AfterViewIni
      * A row was expanded ot collapsed for tree
      */
     treeAction: EventEmitter<any>;
+    pageSizeChange: EventEmitter<any>;
     /**
      * CSS class applied if the header height if fixed height.
      */
@@ -500,6 +506,10 @@ export declare class DatatableComponent implements OnInit, DoCheck, AfterViewIni
      * A row was expanded or collapsed for tree
      */
     onTreeAction(event: any): void;
+    pageSizeChanged(event: any): void;
+    onExport(event: any): Angular5Csv;
+    getDataRowsForExport(): any;
+    getNestedPropertyValue(object: any, nestedPropertyName: string): any;
     ngOnDestroy(): void;
     /**
      * listen for changes to input bindings of all DataTableColumnDirective and

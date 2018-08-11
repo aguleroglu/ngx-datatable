@@ -1,5 +1,5 @@
 /**
- * ngx-datatable v"1.0.9" (https://github.com/sercanuste/ngx-datatable)
+ * ngx-datatable v"1.0.10" (https://github.com/sercanuste/ngx-datatable)
  * Copyright 2016
  * Licensed under MIT
  */
@@ -187,8 +187,8 @@
               flex: 1 1 20%; }
     .ngx-datatable .datatable-footer .datatable-pager {
       -webkit-box-flex: 1;
-          -ms-flex: 1 1 80%;
-              flex: 1 1 80%;
+          -ms-flex: 1 1 30%;
+              flex: 1 1 30%;
       text-align: right; }
       .ngx-datatable .datatable-footer .datatable-pager .pager,
       .ngx-datatable .datatable-footer .datatable-pager .pager li {

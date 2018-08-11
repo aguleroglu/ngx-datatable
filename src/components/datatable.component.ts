@@ -1237,7 +1237,7 @@ export class DatatableComponent implements OnInit, DoCheck, AfterViewInit {
     this.pageSizeChange.emit(event);
   }
 
-  onExport(event) {
+  onExport(event: any) {
     const rows: any[] = this.getDataRowsForExport();
 
     if(event.type == 'CSV') {
@@ -1248,7 +1248,7 @@ export class DatatableComponent implements OnInit, DoCheck, AfterViewInit {
     }
   }
 
-  getDataRowsForExport() {
+  getDataRowsForExport(): any {
     const columns: TableColumn[] = this._internalColumns;
     const headers =
         columns
@@ -1298,7 +1298,7 @@ export class DatatableComponent implements OnInit, DoCheck, AfterViewInit {
   //   return component.location.nativeElement.textContent.trim();
   // }
 
-  getNestedPropertyValue(object: any, nestedPropertyName: string) {
+  getNestedPropertyValue(object: any, nestedPropertyName: string): any {
     var dotIndex = nestedPropertyName.indexOf(".");
     if (dotIndex == -1) {
         return object[nestedPropertyName];
