@@ -7,7 +7,7 @@ import { Component } from '@angular/core';
       <h3>
         Horizontal and Vertical Scrolling
         <small>
-          <a href="https://github.com/swimlane/ngx-datatable/blob/master/demo/basic/scrolling.component.ts" target="_blank">
+          <a href="https://github.com/sercanuste/ngx-datatable/blob/master/demo/basic/scrolling.component.ts" target="_blank">
             Source
           </a>
         </small>

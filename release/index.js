@@ -1,5 +1,5 @@
 /**
- * angular2-data-table v"1.0.9" (https://github.com/swimlane/angular2-data-table)
+ * ngx-datatable v"1.0.9" (https://github.com/sercanuste/ngx-datatable)
  * Copyright 2016
  * Licensed under MIT
  */

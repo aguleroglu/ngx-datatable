@@ -7,7 +7,7 @@ import { Component, ViewChild, ChangeDetectorRef } from '@angular/core';
       <h3>
         Live Data Demo
         <small>
-          <a href="https://github.com/swimlane/ngx-datatable/blob/master/demo/basic/live.component.ts" target="_blank">
+          <a href="https://github.com/sercanuste/ngx-datatable/blob/master/demo/basic/live.component.ts" target="_blank">
             Source
           </a>
         </small>

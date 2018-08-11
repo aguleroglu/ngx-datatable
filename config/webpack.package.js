@@ -9,7 +9,7 @@ const { CheckerPlugin } = require('awesome-typescript-loader');
 
 const banner =
 `/**
- * angular2-data-table v${APP_VERSION} (https://github.com/swimlane/angular2-data-table)
+ * ngx-datatable v${APP_VERSION} (https://github.com/sercanuste/ngx-datatable)
  * Copyright 2016
  * Licensed under MIT
  */`;

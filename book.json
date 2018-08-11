@@ -15,18 +15,18 @@
     ],
     "pluginsConfig": {
         "github": {
-            "url": "https://github.com/swimlane/angular2-data-table/"
+            "url": "https://github.com/sercanuste/ngx-datatable/"
         },
         "theme-api": {
             "theme": "dark"
         },
         "versions": {
-            "gitbookConfigURL": "https://unpkg.com/angular2-data-table/book.json",
+            "gitbookConfigURL": "https://unpkg.com/ngx-datatable/book.json",
             "type": "tags"
         },
         "githubcontributors": {
           "githubOwner": "swimlane",
-          "githubRepository": "angular2-data-table"
+          "githubRepository": "ngx-datatable"
         }
     }
 }

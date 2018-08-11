@@ -7,7 +7,7 @@ import { Component } from '@angular/core';
       <h3>
         Context Menu Event
         <small>
-          <a href="https://github.com/swimlane/ngx-datatable/blob/master/demo/basic/contextmenu.component.ts" target="_blank">
+          <a href="https://github.com/sercanuste/ngx-datatable/blob/master/demo/basic/contextmenu.component.ts" target="_blank">
             Source
           </a>
         </small>

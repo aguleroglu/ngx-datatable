@@ -7,7 +7,7 @@ import { Component, ChangeDetectorRef } from '@angular/core';
       <h3>
         Full Screen
         <small>
-          <a href="https://github.com/swimlane/ngx-datatable/blob/master/demo/tree/fullscreen.component.ts" target="_blank">
+          <a href="https://github.com/sercanuste/ngx-datatable/blob/master/demo/tree/fullscreen.component.ts" target="_blank">
             Source
           </a>
         </small>

@@ -7,7 +7,7 @@ import { Component, TemplateRef, ViewChild } from '@angular/core';
       <h3>
         TemplateRef via Column Property
          <small>
-          <a href="https://github.com/swimlane/ngx-datatable/blob/master/demo/templates/template-obj.component.ts" target="_blank">
+          <a href="https://github.com/sercanuste/ngx-datatable/blob/master/demo/templates/template-obj.component.ts" target="_blank">
             Source
           </a>
         </small>

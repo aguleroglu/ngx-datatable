@@ -6,7 +6,7 @@ import { Component } from '@angular/core';
     <div>
       <h3>Inline HTML template
         <small>
-        <a href="https://github.com/swimlane/ngx-datatable/blob/master/demo/summary/summary-row-inline-html.component.ts">
+        <a href="https://github.com/sercanuste/ngx-datatable/blob/master/demo/summary/summary-row-inline-html.component.ts">
           Source
         </a>
         </small>

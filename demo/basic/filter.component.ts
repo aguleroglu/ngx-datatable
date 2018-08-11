@@ -8,7 +8,7 @@ import {DatatableComponent} from '../../src/components/datatable.component';
       <h3>
         Client-side Search and Filtering
         <small>
-          <a href="https://github.com/swimlane/ngx-datatable/blob/master/demo/basic/filter.component.ts" target="_blank">
+          <a href="https://github.com/sercanuste/ngx-datatable/blob/master/demo/basic/filter.component.ts" target="_blank">
             Source
           </a>
         </small>

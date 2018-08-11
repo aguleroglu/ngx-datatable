@@ -51,5 +51,5 @@ export class AppComponent {
 and you're off to the races! 
 
 For more examples, visit the 
-[demos](https://github.com/swimlane/angular2-data-table/tree/master/demo) directory
+[demos](https://github.com/sercanuste/ngx-datatable/tree/master/demo) directory
 in the source code!

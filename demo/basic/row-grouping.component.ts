@@ -8,7 +8,7 @@ import { NgStyle } from '@angular/common';
       <h3>
         Row Grouping
         <small>
-          <a href="https://github.com/swimlane/ngx-datatable/blob/master/demo/basic/row-grouping.component.ts" target="_blank">
+          <a href="https://github.com/sercanuste/ngx-datatable/blob/master/demo/basic/row-grouping.component.ts" target="_blank">
             Source
           </a>
         </small>
