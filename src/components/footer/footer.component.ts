@@ -18,14 +18,12 @@ import { DatatableFooterDirective } from './footer.directive';
           offset: offset
         }">
       </ng-template>
-      <div class="btn-group" role="group" *ngIf="!footerTemplate">
-          <button 
-            type="button" 
-            class="btn btn-secondary" 
-            [innerHTML]="exportMessage" 
-            (click)="onExport({type:'XLSX'})">
-          </button>
-      </div>
+      <button *ngIf="!footerTemplate"
+        type="button" 
+        class="btn datatable-export-button" 
+        [innerHTML]="exportMessage" 
+        (click)="onExport({type:'XLSX'})">
+      </button>
       <div class="page-count" *ngIf="!footerTemplate">
         {{ totalMessage }}: {{ rowCount?.toLocaleString() }}
       </div>

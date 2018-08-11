@@ -327,6 +327,11 @@
       width: 65px;
       min-width: 57px;
     }
+
+    .datatable-export-button {
+      margin: 10px;
+      height: 33px;
+    }
 	}
 
   // Summary row styles
@@ -335,11 +340,11 @@
       background-color: #ddd;
 
       &:hover {
-	background-color: #ddd;
+				background-color: #ddd;
       }
 
       .datatable-body-cell {
-	font-weight: bold;
+				font-weight: bold;
       }
     }
   }
