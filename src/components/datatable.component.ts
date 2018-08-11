@@ -1300,6 +1300,7 @@ export class DatatableComponent implements OnInit, DoCheck, AfterViewInit {
 
   getNestedPropertyValue(object: any, nestedPropertyName: string): any {
     let dotIndex = nestedPropertyName.indexOf('.');
+    
     if (dotIndex === -1) {
       return object[nestedPropertyName];
     } else {
