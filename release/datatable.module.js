@@ -11,6 +11,7 @@ var common_1 = require("@angular/common");
 var components_1 = require("./components");
 var directives_1 = require("./directives");
 var services_1 = require("./services");
+var utils_1 = require("./utils");
 var NgxDatatableModule = /** @class */ (function () {
     function NgxDatatableModule() {
     }
@@ -22,7 +23,11 @@ var NgxDatatableModule = /** @class */ (function () {
             providers: [
                 services_1.ScrollbarHelper,
                 services_1.DimensionsHelper,
-                services_1.ColumnChangesService
+                services_1.ColumnChangesService,
+                services_1.ExcelService
+            ],
+            entryComponents: [
+                utils_1.TemplateComponent
             ],
             declarations: [
                 components_1.DataTableFooterTemplateDirective,
@@ -54,6 +59,7 @@ var NgxDatatableModule = /** @class */ (function () {
                 components_1.DatatableFooterDirective,
                 components_1.DatatableGroupHeaderTemplateDirective,
                 components_1.DataTableSummaryRowComponent,
+                utils_1.TemplateComponent
             ],
             exports: [
                 components_1.DatatableComponent,

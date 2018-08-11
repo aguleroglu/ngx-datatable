@@ -1,5 +1,5 @@
-import { ElementRef, EventEmitter, OnInit, QueryList, AfterViewInit, DoCheck, KeyValueDiffers, KeyValueDiffer, ChangeDetectorRef } from '@angular/core';
-import { ScrollbarHelper, DimensionsHelper, ColumnChangesService } from '../services';
+import { ElementRef, EventEmitter, OnInit, QueryList, AfterViewInit, DoCheck, KeyValueDiffers, KeyValueDiffer, ChangeDetectorRef, ComponentFactoryResolver, Injector } from '@angular/core';
+import { ScrollbarHelper, DimensionsHelper, ColumnChangesService, ExcelService } from '../services';
 import { ColumnMode, SortType, SelectionType, TableColumn, ContextmenuType } from '../types';
 import { DataTableBodyComponent } from './body';
 import { DatatableGroupHeaderDirective } from './body/body-group-header.directive';
@@ -14,6 +14,9 @@ export declare class DatatableComponent implements OnInit, DoCheck, AfterViewIni
     private dimensionsHelper;
     private cd;
     private columnChangesService;
+    private excelService;
+    private resolver;
+    private injector;
     /**
      * Template for the target marker of drag target columns.
      */
@@ -164,7 +167,7 @@ export declare class DatatableComponent implements OnInit, DoCheck, AfterViewIni
      *
      * emptyMessage     [default] = 'No data to display'
      * totalMessage     [default] = 'Total'
-     * excelMessage     [default] = 'Excel'
+     * exportMessage     [default] = 'Export'
      * selectedMessage  [default] = 'selected'
      */
     messages: any;
@@ -392,7 +395,7 @@ export declare class DatatableComponent implements OnInit, DoCheck, AfterViewIni
     _columns: TableColumn[];
     _columnTemplates: QueryList<DataTableColumnDirective>;
     _subscriptions: Subscription[];
-    constructor(scrollbarHelper: ScrollbarHelper, dimensionsHelper: DimensionsHelper, cd: ChangeDetectorRef, element: ElementRef, differs: KeyValueDiffers, columnChangesService: ColumnChangesService);
+    constructor(scrollbarHelper: ScrollbarHelper, dimensionsHelper: DimensionsHelper, cd: ChangeDetectorRef, element: ElementRef, differs: KeyValueDiffers, columnChangesService: ColumnChangesService, excelService: ExcelService, resolver: ComponentFactoryResolver, injector: Injector);
     /**
      * Lifecycle hook that is called after data-bound
      * properties of a directive are initialized.
@@ -507,8 +510,9 @@ export declare class DatatableComponent implements OnInit, DoCheck, AfterViewIni
      */
     onTreeAction(event: any): void;
     pageSizeChanged(event: any): void;
-    onExport(event: any): Angular5Csv;
+    onExport(event: any): void | Angular5Csv;
     getDataRowsForExport(): any;
+    getRenderedTemplateText(template: any, value: any, row: any): any;
     getNestedPropertyValue(object: any, nestedPropertyName: string): any;
     ngOnDestroy(): void;
     /**

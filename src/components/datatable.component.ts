@@ -1287,7 +1287,7 @@ export class DatatableComponent implements OnInit, DoCheck, AfterViewInit {
     return rows;
   }
 
-  getRenderedTemplateText(template, value, row) {
+  getRenderedTemplateText(template: any, value: any, row: any): any {
     const factory = this.resolver.resolveComponentFactory(TemplateComponent);
     const component = factory.create(this.injector);
 

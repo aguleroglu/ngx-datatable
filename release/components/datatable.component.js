@@ -33,11 +33,14 @@ var header_1 = require("./header");
 var Angular5_csv_1 = require("angular5-csv/Angular5-csv");
 var rxjs_1 = require("rxjs");
 var DatatableComponent = /** @class */ (function () {
-    function DatatableComponent(scrollbarHelper, dimensionsHelper, cd, element, differs, columnChangesService) {
+    function DatatableComponent(scrollbarHelper, dimensionsHelper, cd, element, differs, columnChangesService, excelService, resolver, injector) {
         this.scrollbarHelper = scrollbarHelper;
         this.dimensionsHelper = dimensionsHelper;
         this.cd = cd;
         this.columnChangesService = columnChangesService;
+        this.excelService = excelService;
+        this.resolver = resolver;
+        this.injector = injector;
         /**
          * List of row objects that should be
          * represented as selected in the grid.
@@ -140,7 +143,7 @@ var DatatableComponent = /** @class */ (function () {
          *
          * emptyMessage     [default] = 'No data to display'
          * totalMessage     [default] = 'Total'
-         * excelMessage     [default] = 'Excel'
+         * exportMessage     [default] = 'Export'
          * selectedMessage  [default] = 'selected'
          */
         this.messages = {
@@ -150,7 +153,7 @@ var DatatableComponent = /** @class */ (function () {
             // Footer total message
             totalMessage: 'Total',
             // Footer excel message
-            excelMessage: 'Excel',
+            exportMessage: 'Export',
             // Footer selected message
             selectedMessage: 'selected'
         };
@@ -949,11 +952,14 @@ var DatatableComponent = /** @class */ (function () {
     };
     DatatableComponent.prototype.onExport = function (event) {
         var rows = this.getDataRowsForExport();
-        if (event.type == 'CSV') {
-            return new Angular5_csv_1.Angular5Csv(rows, 'report', this.exportOptions);
+        if (event.type === 'CSV') {
+            return new Angular5_csv_1.Angular5Csv(rows, this.exportTitle, this.exportOptions);
+        }
+        else if (event.type === 'XLSX') {
+            return this.excelService.exportAsExcelFile(rows, this.exportTitle);
         }
         else {
-            return new Angular5_csv_1.Angular5Csv(rows, 'report', this.exportOptions);
+            return new Angular5_csv_1.Angular5Csv(rows, this.exportTitle, this.exportOptions);
         }
     };
     DatatableComponent.prototype.getDataRowsForExport = function () {
@@ -975,29 +981,28 @@ var DatatableComponent = /** @class */ (function () {
                     prop = column.prop.toString();
                     propValue = _this.getNestedPropertyValue(row, prop);
                 }
-                r[column.name] = (typeof propValue === 'boolean') ? (propValue ? 'Yes' : 'No') : propValue;
-                // if (column.cellTemplate) {
-                //     r[column.name] = this.getRenderedTemplateText(column.cellTemplate, propValue, row, resolver, injector);
-                // } else {
-                //     r[column.name] = (typeof propValue === 'boolean') ? (propValue ? 'Yes' : 'No') : propValue;
-                // }
+                if (column.cellTemplate) {
+                    r[column.name] = _this.getRenderedTemplateText(column.cellTemplate, propValue, row);
+                }
+                else {
+                    r[column.name] = (typeof propValue === 'boolean') ? (propValue ? 'Yes' : 'No') : propValue;
+                }
             });
             return r;
         });
-        console.log(rows);
         return rows;
     };
-    // getRenderedTemplateText(template, value, row, resolver: ComponentFactoryResolver, injector: Injector) {
-    //   const factory = resolver.resolveComponentFactory(TemplateComponent);
-    //   const component = factory.create(injector);
-    //   component.instance.template = template;
-    //   component.instance.context = { value: value, row: row };
-    //   component.changeDetectorRef.detectChanges();
-    //   return component.location.nativeElement.textContent.trim();
-    // }
+    DatatableComponent.prototype.getRenderedTemplateText = function (template, value, row) {
+        var factory = this.resolver.resolveComponentFactory(utils_1.TemplateComponent);
+        var component = factory.create(this.injector);
+        component.instance.template = template;
+        component.instance.context = { value: value, row: row };
+        component.changeDetectorRef.detectChanges();
+        return component.location.nativeElement.textContent.trim();
+    };
     DatatableComponent.prototype.getNestedPropertyValue = function (object, nestedPropertyName) {
-        var dotIndex = nestedPropertyName.indexOf(".");
-        if (dotIndex == -1) {
+        var dotIndex = nestedPropertyName.indexOf('.');
+        if (dotIndex === -1) {
             return object[nestedPropertyName];
         }
         else {
@@ -1326,7 +1331,7 @@ var DatatableComponent = /** @class */ (function () {
     DatatableComponent = __decorate([
         core_1.Component({
             selector: 'ngx-datatable',
-            template: "\n    <div\n      visibilityObserver\n      (visible)=\"recalculate()\">\n      <datatable-header\n        *ngIf=\"headerHeight\"\n        [sorts]=\"sorts\"\n        [sortType]=\"sortType\"\n        [scrollbarH]=\"scrollbarH\"\n        [innerWidth]=\"_innerWidth\"\n        [offsetX]=\"_offsetX | async\"\n        [dealsWithGroup]=\"groupedRows\"\n        [columns]=\"_internalColumns\"\n        [headerHeight]=\"headerHeight\"\n        [reorderable]=\"reorderable\"\n        [targetMarkerTemplate]=\"targetMarkerTemplate\"\n        [sortAscendingIcon]=\"cssClasses.sortAscending\"\n        [sortDescendingIcon]=\"cssClasses.sortDescending\"\n        [allRowsSelected]=\"allRowsSelected\"\n        [selectionType]=\"selectionType\"\n        (sort)=\"onColumnSort($event)\"\n        (resize)=\"onColumnResize($event)\"\n        (reorder)=\"onColumnReorder($event)\"\n        (select)=\"onHeaderSelect($event)\"\n        (columnContextmenu)=\"onColumnContextmenu($event)\">\n      </datatable-header>\n      <datatable-body\n        [groupRowsBy]=\"groupRowsBy\"\n        [groupedRows]=\"groupedRows\"\n        [rows]=\"_internalRows\"\n        [groupExpansionDefault]=\"groupExpansionDefault\"\n        [scrollbarV]=\"scrollbarV\"\n        [scrollbarH]=\"scrollbarH\"\n        [virtualization]=\"virtualization\"\n        [loadingIndicator]=\"loadingIndicator\"\n        [externalPaging]=\"externalPaging\"\n        [rowHeight]=\"rowHeight\"\n        [rowCount]=\"rowCount\"\n        [offset]=\"offset\"\n        [trackByProp]=\"trackByProp\"\n        [columns]=\"_internalColumns\"\n        [pageSize]=\"pageSize\"\n        [offsetX]=\"_offsetX | async\"\n        [rowDetail]=\"rowDetail\"\n        [groupHeader]=\"groupHeader\"\n        [selected]=\"selected\"\n        [innerWidth]=\"_innerWidth\"\n        [bodyHeight]=\"bodyHeight\"\n        [selectionType]=\"selectionType\"\n        [emptyMessage]=\"messages.emptyMessage\"\n        [rowIdentity]=\"rowIdentity\"\n        [rowClass]=\"rowClass\"\n        [selectCheck]=\"selectCheck\"\n        [displayCheck]=\"displayCheck\"\n        [summaryRow]=\"summaryRow\"\n        [summaryHeight]=\"summaryHeight\"\n        [summaryPosition]=\"summaryPosition\"\n        (page)=\"onBodyPage($event)\"\n        (activate)=\"activate.emit($event)\"\n        (rowContextmenu)=\"onRowContextmenu($event)\"\n        (select)=\"onBodySelect($event)\"\n        (scroll)=\"onBodyScroll($event)\"\n        (treeAction)=\"onTreeAction($event)\">\n      </datatable-body>\n      <datatable-footer\n        *ngIf=\"footerHeight\"\n        [rowCount]=\"rowCount\"\n        [pageSize]=\"pageSize\"\n        [offset]=\"offset\"\n        [limitOptions]=\"limitOptions\"\n        [footerHeight]=\"footerHeight\"\n        [footerTemplate]=\"footer\"\n        [totalMessage]=\"messages.totalMessage\"\n        [excelMessage]=\"messages.excelMessage\"\n        [pagerLeftArrowIcon]=\"cssClasses.pagerLeftArrow\"\n        [pagerRightArrowIcon]=\"cssClasses.pagerRightArrow\"\n        [pagerPreviousIcon]=\"cssClasses.pagerPrevious\"\n        [selectedCount]=\"selected.length\"\n        [selectedMessage]=\"!!selectionType && messages.selectedMessage\"\n        [pagerNextIcon]=\"cssClasses.pagerNext\"\n        (page)=\"onFooterPage($event)\"\n        (pageSizeChange)=\"pageSizeChanged($event)\"\n        (export)=\"onExport($event)\">\n      </datatable-footer>\n    </div>\n  ",
+            template: "\n    <div\n      visibilityObserver\n      (visible)=\"recalculate()\">\n      <datatable-header\n        *ngIf=\"headerHeight\"\n        [sorts]=\"sorts\"\n        [sortType]=\"sortType\"\n        [scrollbarH]=\"scrollbarH\"\n        [innerWidth]=\"_innerWidth\"\n        [offsetX]=\"_offsetX | async\"\n        [dealsWithGroup]=\"groupedRows\"\n        [columns]=\"_internalColumns\"\n        [headerHeight]=\"headerHeight\"\n        [reorderable]=\"reorderable\"\n        [targetMarkerTemplate]=\"targetMarkerTemplate\"\n        [sortAscendingIcon]=\"cssClasses.sortAscending\"\n        [sortDescendingIcon]=\"cssClasses.sortDescending\"\n        [allRowsSelected]=\"allRowsSelected\"\n        [selectionType]=\"selectionType\"\n        (sort)=\"onColumnSort($event)\"\n        (resize)=\"onColumnResize($event)\"\n        (reorder)=\"onColumnReorder($event)\"\n        (select)=\"onHeaderSelect($event)\"\n        (columnContextmenu)=\"onColumnContextmenu($event)\">\n      </datatable-header>\n      <datatable-body\n        [groupRowsBy]=\"groupRowsBy\"\n        [groupedRows]=\"groupedRows\"\n        [rows]=\"_internalRows\"\n        [groupExpansionDefault]=\"groupExpansionDefault\"\n        [scrollbarV]=\"scrollbarV\"\n        [scrollbarH]=\"scrollbarH\"\n        [virtualization]=\"virtualization\"\n        [loadingIndicator]=\"loadingIndicator\"\n        [externalPaging]=\"externalPaging\"\n        [rowHeight]=\"rowHeight\"\n        [rowCount]=\"rowCount\"\n        [offset]=\"offset\"\n        [trackByProp]=\"trackByProp\"\n        [columns]=\"_internalColumns\"\n        [pageSize]=\"pageSize\"\n        [offsetX]=\"_offsetX | async\"\n        [rowDetail]=\"rowDetail\"\n        [groupHeader]=\"groupHeader\"\n        [selected]=\"selected\"\n        [innerWidth]=\"_innerWidth\"\n        [bodyHeight]=\"bodyHeight\"\n        [selectionType]=\"selectionType\"\n        [emptyMessage]=\"messages.emptyMessage\"\n        [rowIdentity]=\"rowIdentity\"\n        [rowClass]=\"rowClass\"\n        [selectCheck]=\"selectCheck\"\n        [displayCheck]=\"displayCheck\"\n        [summaryRow]=\"summaryRow\"\n        [summaryHeight]=\"summaryHeight\"\n        [summaryPosition]=\"summaryPosition\"\n        (page)=\"onBodyPage($event)\"\n        (activate)=\"activate.emit($event)\"\n        (rowContextmenu)=\"onRowContextmenu($event)\"\n        (select)=\"onBodySelect($event)\"\n        (scroll)=\"onBodyScroll($event)\"\n        (treeAction)=\"onTreeAction($event)\">\n      </datatable-body>\n      <datatable-footer\n        *ngIf=\"footerHeight\"\n        [rowCount]=\"rowCount\"\n        [pageSize]=\"pageSize\"\n        [offset]=\"offset\"\n        [limitOptions]=\"limitOptions\"\n        [footerHeight]=\"footerHeight\"\n        [footerTemplate]=\"footer\"\n        [totalMessage]=\"messages.totalMessage\"\n        [exportMessage]=\"messages.exportMessage\"\n        [pagerLeftArrowIcon]=\"cssClasses.pagerLeftArrow\"\n        [pagerRightArrowIcon]=\"cssClasses.pagerRightArrow\"\n        [pagerPreviousIcon]=\"cssClasses.pagerPrevious\"\n        [selectedCount]=\"selected.length\"\n        [selectedMessage]=\"!!selectionType && messages.selectedMessage\"\n        [pagerNextIcon]=\"cssClasses.pagerNext\"\n        (page)=\"onFooterPage($event)\"\n        (pageSizeChange)=\"pageSizeChanged($event)\"\n        (export)=\"onExport($event)\">\n      </datatable-footer>\n    </div>\n  ",
             changeDetection: core_1.ChangeDetectionStrategy.OnPush,
             encapsulation: core_1.ViewEncapsulation.None,
             styleUrls: ['./datatable.component.css'],
@@ -1341,7 +1346,10 @@ var DatatableComponent = /** @class */ (function () {
             core_1.ChangeDetectorRef,
             core_1.ElementRef,
             core_1.KeyValueDiffers,
-            services_1.ColumnChangesService])
+            services_1.ColumnChangesService,
+            services_1.ExcelService,
+            core_1.ComponentFactoryResolver,
+            core_1.Injector])
     ], DatatableComponent);
     return DatatableComponent;
 }());

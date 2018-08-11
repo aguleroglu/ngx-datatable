@@ -10,6 +10,6 @@ import { Component, Input, OnInit } from '@angular/core';
   `
 })
 export class TemplateComponent {
-    @Input() template;
-    @Input() context;
+    @Input() template: any;
+    @Input() context: any;
 }

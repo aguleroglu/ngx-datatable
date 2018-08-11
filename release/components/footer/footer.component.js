@@ -33,12 +33,12 @@ var DataTableFooterComponent = /** @class */ (function () {
         configurable: true
     });
     DataTableFooterComponent.prototype.onPageSizeChanged = function (event) {
-        this.pageSize = parseInt(event.target.value);
+        this.pageSize = parseInt(event.target.value, 10);
         this.offset = 0;
         this.pageSizeChange.emit({
             count: this.rowCount,
-            pageSize: parseInt(event.target.value),
-            limit: parseInt(event.target.value),
+            pageSize: this.pageSize,
+            limit: parseInt(event.target.value, 10),
             offset: 0
         });
     };
@@ -88,7 +88,7 @@ var DataTableFooterComponent = /** @class */ (function () {
     __decorate([
         core_1.Input(),
         __metadata("design:type", String)
-    ], DataTableFooterComponent.prototype, "excelMessage", void 0);
+    ], DataTableFooterComponent.prototype, "exportMessage", void 0);
     __decorate([
         core_1.Input(),
         __metadata("design:type", footer_directive_1.DatatableFooterDirective)
@@ -116,7 +116,7 @@ var DataTableFooterComponent = /** @class */ (function () {
     DataTableFooterComponent = __decorate([
         core_1.Component({
             selector: 'datatable-footer',
-            template: "\n    <div\n      class=\"datatable-footer-inner\"\n      [ngClass]=\"{'selected-count': selectedMessage}\"\n      [style.height.px]=\"footerHeight\">\n      <ng-template\n        *ngIf=\"footerTemplate\"\n        [ngTemplateOutlet]=\"footerTemplate.template\"\n        [ngTemplateOutletContext]=\"{ \n          rowCount: rowCount, \n          pageSize: pageSize, \n          selectedCount: selectedCount,\n          curPage: curPage,\n          offset: offset\n        }\">\n      </ng-template>\n      <div class=\"btn-group\" role=\"group\" style=\"padding:5px;\" aria-label=\"\" *ngIf=\"!footerTemplate\">\n          <button type=\"button\" class=\"btn btn-secondary\" [innerHTML]=\"excelMessage\" (click)=\"onExport({type:'XLSX'})\"></button>\n      </div>\n      <div class=\"page-count\" *ngIf=\"!footerTemplate\">\n        {{ totalMessage }}: {{ rowCount?.toLocaleString() }}\n      </div>\n      <select\n        (change)=\"onPageSizeChanged($event)\" \n        class=\"limit-select\">\n        <option *ngFor=\"let item of limitOptions\" value=\"{{ item.id }}\">{{ item.text }}</option>\n      </select>\n      <datatable-pager *ngIf=\"!footerTemplate\"\n        [pagerLeftArrowIcon]=\"pagerLeftArrowIcon\"\n        [pagerRightArrowIcon]=\"pagerRightArrowIcon\"\n        [pagerPreviousIcon]=\"pagerPreviousIcon\"\n        [pagerNextIcon]=\"pagerNextIcon\"\n        [page]=\"curPage\"\n        [size]=\"pageSize\"\n        [count]=\"rowCount\"\n        [hidden]=\"!isVisible\"\n        (change)=\"page.emit($event)\">\n      </datatable-pager>\n    </div>\n  ",
+            template: "\n    <div\n      class=\"datatable-footer-inner\"\n      [ngClass]=\"{'selected-count': selectedMessage}\"\n      [style.height.px]=\"footerHeight\">\n      <ng-template\n        *ngIf=\"footerTemplate\"\n        [ngTemplateOutlet]=\"footerTemplate.template\"\n        [ngTemplateOutletContext]=\"{ \n          rowCount: rowCount, \n          pageSize: pageSize, \n          selectedCount: selectedCount,\n          curPage: curPage,\n          offset: offset\n        }\">\n      </ng-template>\n      <div class=\"btn-group\" role=\"group\" *ngIf=\"!footerTemplate\">\n          <button \n            type=\"button\" \n            class=\"btn btn-secondary\" \n            [innerHTML]=\"exportMessage\" \n            (click)=\"onExport({type:'XLSX'})\">\n          </button>\n      </div>\n      <div class=\"page-count\" *ngIf=\"!footerTemplate\">\n        {{ totalMessage }}: {{ rowCount?.toLocaleString() }}\n      </div>\n      <select\n        (change)=\"onPageSizeChanged($event)\" \n        class=\"limit-select\">\n        <option *ngFor=\"let item of limitOptions\" value=\"{{ item.id }}\">{{ item.text }}</option>\n      </select>\n      <datatable-pager *ngIf=\"!footerTemplate\"\n        [pagerLeftArrowIcon]=\"pagerLeftArrowIcon\"\n        [pagerRightArrowIcon]=\"pagerRightArrowIcon\"\n        [pagerPreviousIcon]=\"pagerPreviousIcon\"\n        [pagerNextIcon]=\"pagerNextIcon\"\n        [page]=\"curPage\"\n        [size]=\"pageSize\"\n        [count]=\"rowCount\"\n        [hidden]=\"!isVisible\"\n        (change)=\"page.emit($event)\">\n      </datatable-pager>\n    </div>\n  ",
             host: {
                 class: 'datatable-footer'
             },

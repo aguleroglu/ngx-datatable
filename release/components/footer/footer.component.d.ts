@@ -11,7 +11,7 @@ export declare class DataTableFooterComponent {
     pagerPreviousIcon: string;
     pagerNextIcon: string;
     totalMessage: string;
-    excelMessage: string;
+    exportMessage: string;
     footerTemplate: DatatableFooterDirective;
     selectedCount: number;
     selectedMessage: string | boolean;
