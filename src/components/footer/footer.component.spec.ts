@@ -65,12 +65,12 @@ describe('DataTableFooterComponent', () => {
       component.selectedMessage = 'selected';
       component.selectedCount = 7;
       component.rowCount = 10;
-      component.totalMessage = 'total';
+      component.totalMessage = 'Total';
       component.excelMessage = 'Excel';
       page.detectChangesAndRunQueries();
 
       expect(page.pageCount.nativeElement.innerText).toEqual(
-        '7 selected / 10 total'
+        'Total: 10'
       );
     });
 
@@ -78,11 +78,11 @@ describe('DataTableFooterComponent', () => {
       component.footerTemplate = undefined;
       component.selectedMessage = undefined;
       component.rowCount = 100;
-      component.totalMessage = 'total';
+      component.totalMessage = 'Total';
       component.excelMessage = 'Excel';
       page.detectChangesAndRunQueries();
 
-      expect(page.pageCount.nativeElement.innerText).toEqual('100 total');
+      expect(page.pageCount.nativeElement.innerText).toEqual('Total: 100');
     });
 
     it('should render a DataTablePagerComponent', () => {
@@ -252,7 +252,9 @@ describe('DataTableFooterComponent', () => {
       [selectedCount]="selectedCount"
       [selectedMessage]="selectedMessage"
       [pagerNextIcon]="pagerNextIcon"
-      (page)="onPageEvent($event)">
+      (page)="onPageEvent($event)"
+      (pageSizeChange)="pageSizeChanged($event)"
+      (export)="onExport($event)">
     </datatable-footer>
     
     <ng-template
