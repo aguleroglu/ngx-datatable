@@ -143,5 +143,7 @@
     "doc": "docs",
     "test": "test"
   },
-  "dependencies": {}
+  "dependencies": {
+    "angular5-csv": "^0.2.10"
+  }
 }

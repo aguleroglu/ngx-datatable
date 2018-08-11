@@ -20,6 +20,7 @@ import { DatatableRowDetailDirective } from './row-detail';
 import { DatatableFooterDirective } from './footer';
 import { DataTableHeaderComponent } from './header';
 import { MouseEvent } from '../events';
+import { Angular5Csv } from 'angular5-csv/Angular5-csv';
 import { BehaviorSubject, Subscription } from 'rxjs';
 
 @Component({
@@ -93,16 +94,20 @@ import { BehaviorSubject, Subscription } from 'rxjs';
         [rowCount]="rowCount"
         [pageSize]="pageSize"
         [offset]="offset"
+        [limitOptions]="limitOptions"
         [footerHeight]="footerHeight"
         [footerTemplate]="footer"
         [totalMessage]="messages.totalMessage"
+        [excelMessage]="messages.excelMessage"
         [pagerLeftArrowIcon]="cssClasses.pagerLeftArrow"
         [pagerRightArrowIcon]="cssClasses.pagerRightArrow"
         [pagerPreviousIcon]="cssClasses.pagerPrevious"
         [selectedCount]="selected.length"
         [selectedMessage]="!!selectionType && messages.selectedMessage"
         [pagerNextIcon]="cssClasses.pagerNext"
-        (page)="onFooterPage($event)">
+        (page)="onFooterPage($event)"
+        (pageSizeChange)="pageSizeChanged($event)"
+        (export)="onExport($event)">
       </datatable-footer>
     </div>
   `,
@@ -267,11 +272,30 @@ export class DatatableComponent implements OnInit, DoCheck, AfterViewInit {
    */
   @Input() externalSorting: boolean = false;
 
+  @Input() limitOptions: any = [
+    {
+      id: 10,
+      text: '10'
+    },
+    {
+      id: 20,
+      text: '20'
+    },
+    {
+      id: 50,
+      text: '50'
+    },
+    {
+      id: 100,
+      text: '100'
+    }
+  ];
+
   /**
    * The page size to be shown.
    * Default value: `undefined`
    */
-  @Input() set limit(val: number | undefined) {
+  @Input() set limit(val: number | 10) {
     this._limit = val;
 
     // recalculate sizes/etc
@@ -281,7 +305,7 @@ export class DatatableComponent implements OnInit, DoCheck, AfterViewInit {
   /**
    * Gets the limit.
    */
-  get limit(): number | undefined {
+  get limit(): number | 10 {
     return this._limit;
   }
 
@@ -373,7 +397,8 @@ export class DatatableComponent implements OnInit, DoCheck, AfterViewInit {
    * Message overrides for localization
    *
    * emptyMessage     [default] = 'No data to display'
-   * totalMessage     [default] = 'total'
+   * totalMessage     [default] = 'Total'
+   * excelMessage     [default] = 'Excel'
    * selectedMessage  [default] = 'selected'
    */
   @Input() messages: any = {
@@ -382,7 +407,10 @@ export class DatatableComponent implements OnInit, DoCheck, AfterViewInit {
     emptyMessage: 'No data to display',
 
     // Footer total message
-    totalMessage: 'total',
+    totalMessage: 'Total',
+
+    // Footer excel message
+    excelMessage: 'Excel',
 
     // Footer selected message
     selectedMessage: 'selected'
@@ -477,6 +505,18 @@ export class DatatableComponent implements OnInit, DoCheck, AfterViewInit {
    */
   @Input() summaryPosition: string = 'top';
 
+  @Input() exportTitle: string = 'Report';
+
+  @Input() exportOptions: any = {
+    fieldSeparator: ';',
+    quoteStrings: '"',
+    decimalseparator: '.',
+    title: this.exportTitle,
+    showLabels: true,
+    showTitle: false,
+    useBom: true
+  };
+
   /**
    * Body was scrolled typically in a `scrollbarV:true` scenario.
    */
@@ -523,6 +563,8 @@ export class DatatableComponent implements OnInit, DoCheck, AfterViewInit {
    * A row was expanded ot collapsed for tree
    */
   @Output() treeAction: EventEmitter<any> = new EventEmitter();
+
+  @Output() pageSizeChange: EventEmitter<any> = new EventEmitter();
 
   /**
    * CSS class applied if the header height if fixed height.
@@ -1186,7 +1228,88 @@ export class DatatableComponent implements OnInit, DoCheck, AfterViewInit {
       r[this.treeToRelation] === event.row[this.treeToRelation]);
     this.treeAction.emit({row, rowIndex});
   }
-    
+
+  pageSizeChanged(event: any) {
+    this.limit = event.limit;
+    this.pageSize = event.pageSize;
+    this.offset = event.offset;
+
+    this.pageSizeChange.emit(event);
+  }
+
+  onExport(event) {
+    const rows: any[] = this.getDataRowsForExport();
+
+    if(event.type == 'CSV') {
+      return new Angular5Csv(rows, 'report', this.exportOptions);
+    }
+    else {
+      return new Angular5Csv(rows, 'report', this.exportOptions);      
+    }
+  }
+
+  getDataRowsForExport() {
+    const columns: TableColumn[] = this._internalColumns;
+    const headers =
+        columns
+            .map((column: TableColumn) => column.name)
+            .filter((e) => e);  // remove column without name (i.e. falsy value)
+
+    this.exportOptions.headers = headers;
+
+    const rows: any[] = this._internalRows.map((row) => {
+        let r = {};
+
+        columns.forEach((column) => {
+            if (!column.name) { return; }   // ignore column without name
+
+            var prop
+            var propValue;
+            if (column.prop) {
+                prop = column.prop.toString();
+                propValue = this.getNestedPropertyValue(row, prop);
+            }
+
+            r[column.name] = (typeof propValue === 'boolean') ? (propValue ? 'Yes' : 'No') : propValue;
+
+            // if (column.cellTemplate) {
+            //     r[column.name] = this.getRenderedTemplateText(column.cellTemplate, propValue, row, resolver, injector);
+            // } else {
+            //     r[column.name] = (typeof propValue === 'boolean') ? (propValue ? 'Yes' : 'No') : propValue;
+            // }
+        });
+
+        return r;
+    });
+
+    console.log(rows);
+
+    return rows;
+  }
+
+  // getRenderedTemplateText(template, value, row, resolver: ComponentFactoryResolver, injector: Injector) {
+  //   const factory = resolver.resolveComponentFactory(TemplateComponent);
+  //   const component = factory.create(injector);
+
+  //   component.instance.template = template;
+  //   component.instance.context = { value: value, row: row };
+  //   component.changeDetectorRef.detectChanges();
+
+  //   return component.location.nativeElement.textContent.trim();
+  // }
+
+  getNestedPropertyValue(object: any, nestedPropertyName: string) {
+    var dotIndex = nestedPropertyName.indexOf(".");
+    if (dotIndex == -1) {
+        return object[nestedPropertyName];
+    } else {
+        var propertyName = nestedPropertyName.substring(0, dotIndex);
+        var nestedPropertyNames = nestedPropertyName.substring(dotIndex + 1);
+
+        return this.getNestedPropertyValue(object[propertyName], nestedPropertyNames);
+    }
+  }
+
   ngOnDestroy() {
     this._subscriptions.forEach(subscription => subscription.unsubscribe());
   }

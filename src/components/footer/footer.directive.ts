@@ -6,6 +6,7 @@ export class DatatableFooterDirective {
 
   @Input() footerHeight: number;
   @Input() totalMessage: string;
+  @Input() excelMessage: string;
   @Input() selectedMessage: string | boolean;
   @Input() pagerLeftArrowIcon: string;
   @Input() pagerRightArrowIcon: string;

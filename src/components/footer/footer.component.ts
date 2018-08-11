@@ -18,12 +18,17 @@ import { DatatableFooterDirective } from './footer.directive';
           offset: offset
         }">
       </ng-template>
-      <div class="page-count" *ngIf="!footerTemplate">
-        <span *ngIf="selectedMessage">
-          {{selectedCount?.toLocaleString()}} {{selectedMessage}} / 
-        </span>
-        {{rowCount?.toLocaleString()}} {{totalMessage}}
+      <div class="btn-group" role="group" style="padding:5px;" aria-label="" *ngIf="!footerTemplate">
+          <button type="button" class="btn btn-secondary" [innerHTML]="excelMessage" (click)="onExport({type:'XLSX'})"></button>
       </div>
+      <div class="page-count" *ngIf="!footerTemplate">
+        {{ totalMessage }}: {{ rowCount?.toLocaleString() }}
+      </div>
+      <select
+        (change)="onPageSizeChanged($event)" 
+        class="limit-select">
+        <option *ngFor="let item of limitOptions" value="{{ item.id }}">{{ item.text }}</option>
+      </select>
       <datatable-pager *ngIf="!footerTemplate"
         [pagerLeftArrowIcon]="pagerLeftArrowIcon"
         [pagerRightArrowIcon]="pagerRightArrowIcon"
@@ -48,17 +53,22 @@ export class DataTableFooterComponent {
   @Input() rowCount: number;
   @Input() pageSize: number;
   @Input() offset: number;
+  @Input() limitOptions: any;
   @Input() pagerLeftArrowIcon: string;
   @Input() pagerRightArrowIcon: string;
   @Input() pagerPreviousIcon: string;
   @Input() pagerNextIcon: string;
   @Input() totalMessage: string;
+  @Input() excelMessage: string;
   @Input() footerTemplate: DatatableFooterDirective;
 
   @Input() selectedCount: number = 0;
   @Input() selectedMessage: string | boolean;
 
   @Output() page: EventEmitter<any> = new EventEmitter();
+  @Output() pageSizeChange: EventEmitter<any> = new EventEmitter();
+
+  @Output() export: EventEmitter<any> = new EventEmitter();
 
   get isVisible(): boolean {
     return (this.rowCount / this.pageSize) > 1;
@@ -67,5 +77,20 @@ export class DataTableFooterComponent {
   get curPage(): number {
     return this.offset + 1;
   }
+  
+  onPageSizeChanged(event) {
+    this.pageSize = parseInt(event.target.value);
+    this.offset = 0;
 
+    this.pageSizeChange.emit({
+      count: this.rowCount,
+      pageSize: parseInt(event.target.value),
+      limit: parseInt(event.target.value),
+      offset: 0
+    });
+  }
+
+  onExport(event) {
+    this.export.emit(event);
+  }
 }

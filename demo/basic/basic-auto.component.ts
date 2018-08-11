@@ -7,13 +7,13 @@ import { Component } from '@angular/core';
       <h3>
         Fluid Row Heights 
         <small>
-          <a href="https://github.com/swimlane/ngx-datatable/blob/master/demo/basic/basic-auto.component.ts" target="_blank">
+          <a href="https://github.com/sercanuste/ngx-datatable/blob/master/demo/basic/basic-auto.component.ts" target="_blank">
             Source
           </a>
         </small>
       </h3>
       <ngx-datatable
-        class="material"
+        class="material responsive"
         [rows]="rows"
         [loadingIndicator]="loadingIndicator"
         [columns]="columns"
@@ -21,7 +21,10 @@ import { Component } from '@angular/core';
         [headerHeight]="50"
         [footerHeight]="50"
         [rowHeight]="'auto'"
-        [reorderable]="reorderable">
+        [reorderable]="reorderable"
+        [count]="count" 
+        [limit]="limit"
+        (pageSizeChange)="onPageSizeChanged($event)">
       </ngx-datatable>
     </div>
   `
@@ -31,6 +34,8 @@ export class BasicAutoComponent {
   rows = [];
   loadingIndicator: boolean = true;
   reorderable: boolean = true;
+
+  limit: any = 10;
 
   columns = [
     { prop: 'name' },
@@ -56,4 +61,7 @@ export class BasicAutoComponent {
     req.send();
   }
 
+  onPageSizeChanged(event) {
+    console.log(event);
+  }
 }
