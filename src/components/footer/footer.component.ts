@@ -18,8 +18,13 @@ import { DatatableFooterDirective } from './footer.directive';
           offset: offset
         }">
       </ng-template>
-      <div class="btn-group" role="group" style="padding:5px;" aria-label="" *ngIf="!footerTemplate">
-          <button type="button" class="btn btn-secondary" [innerHTML]="exportMessage" (click)="onExport({type:'XLSX'})"></button>
+      <div class="btn-group" role="group" *ngIf="!footerTemplate">
+          <button 
+            type="button" 
+            class="btn btn-secondary" 
+            [innerHTML]="exportMessage" 
+            (click)="onExport({type:'XLSX'})">
+          </button>
       </div>
       <div class="page-count" *ngIf="!footerTemplate">
         {{ totalMessage }}: {{ rowCount?.toLocaleString() }}
@@ -79,13 +84,13 @@ export class DataTableFooterComponent {
   }
   
   onPageSizeChanged(event: any) {
-    this.pageSize = parseInt(event.target.value);
+    this.pageSize = parseInt(event.target.value, 10);
     this.offset = 0;
 
     this.pageSizeChange.emit({
       count: this.rowCount,
-      pageSize: parseInt(event.target.value),
-      limit: parseInt(event.target.value),
+      pageSize: this.pageSize,
+      limit: parseInt(event.target.value, 10),
       offset: 0
     });
   }

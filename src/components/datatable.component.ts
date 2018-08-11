@@ -11,7 +11,7 @@ import {
   setColumnDefaults, throttleable, translateTemplates,
   groupRowsByParents, optionalGetterForProp, TemplateComponent
 } from '../utils';
-import { ScrollbarHelper, DimensionsHelper, ColumnChangesService } from '../services';
+import { ScrollbarHelper, DimensionsHelper, ColumnChangesService, ExcelService } from '../services';
 import { ColumnMode, SortType, SelectionType, TableColumn, ContextmenuType } from '../types';
 import { DataTableBodyComponent } from './body';
 import { DatatableGroupHeaderDirective } from './body/body-group-header.directive';
@@ -124,7 +124,7 @@ export class DatatableComponent implements OnInit, DoCheck, AfterViewInit {
    * Template for the target marker of drag target columns.
    */
   @Input() targetMarkerTemplate: any;
-
+  
   /**
    * Rows that are displayed in the table.
    */
@@ -750,9 +750,6 @@ export class DatatableComponent implements OnInit, DoCheck, AfterViewInit {
   _columnTemplates: QueryList<DataTableColumnDirective>;
   _subscriptions: Subscription[] = [];
 
-  _resolver: ComponentFactoryResolver;
-  _injector: Injector;
-
   constructor(
     @SkipSelf() private scrollbarHelper: ScrollbarHelper,
     @SkipSelf() private dimensionsHelper: DimensionsHelper,
@@ -760,15 +757,13 @@ export class DatatableComponent implements OnInit, DoCheck, AfterViewInit {
     element: ElementRef,
     differs: KeyValueDiffers,
     private columnChangesService: ColumnChangesService,
-    resolver: ComponentFactoryResolver, 
-    injector: Injector) {
+    private excelService: ExcelService,
+    private resolver: ComponentFactoryResolver, 
+    private injector: Injector) {
 
     // get ref to elm for measuring
     this.element = element.nativeElement;
     this.rowDiffer = differs.find({}).create();
-
-    this._resolver = resolver;
-    this._injector = injector;
   }
 
   /**
@@ -1248,11 +1243,12 @@ export class DatatableComponent implements OnInit, DoCheck, AfterViewInit {
   onExport(event: any) {
     const rows: any[] = this.getDataRowsForExport();
 
-    if(event.type == 'CSV') {
-      return new Angular5Csv(rows, 'report', this.exportOptions);
-    }
-    else {
-      return new Angular5Csv(rows, 'report', this.exportOptions);      
+    if(event.type === 'CSV') {
+      return new Angular5Csv(rows, this.exportTitle, this.exportOptions);
+    } else if(event.type === 'XLSX') {
+      return this.excelService.exportAsExcelFile(rows, this.exportTitle);
+    } else {
+      return new Angular5Csv(rows, this.exportTitle, this.exportOptions);      
     }
   }
 
@@ -1271,8 +1267,8 @@ export class DatatableComponent implements OnInit, DoCheck, AfterViewInit {
         columns.forEach((column) => {
             if (!column.name) { return; }   // ignore column without name
 
-            var prop
-            var propValue;
+            let prop;
+            let propValue;
             if (column.prop) {
                 prop = column.prop.toString();
                 propValue = this.getNestedPropertyValue(row, prop);
@@ -1288,14 +1284,12 @@ export class DatatableComponent implements OnInit, DoCheck, AfterViewInit {
         return r;
     });
 
-    console.log(rows);
-
     return rows;
   }
 
   getRenderedTemplateText(template, value, row) {
-    const factory = this._resolver.resolveComponentFactory(TemplateComponent);
-    const component = factory.create(this._injector);
+    const factory = this.resolver.resolveComponentFactory(TemplateComponent);
+    const component = factory.create(this.injector);
 
     component.instance.template = template;
     component.instance.context = { value: value, row: row };
@@ -1305,14 +1299,14 @@ export class DatatableComponent implements OnInit, DoCheck, AfterViewInit {
   }
 
   getNestedPropertyValue(object: any, nestedPropertyName: string): any {
-    var dotIndex = nestedPropertyName.indexOf(".");
-    if (dotIndex == -1) {
-        return object[nestedPropertyName];
+    let dotIndex = nestedPropertyName.indexOf('.');
+    if (dotIndex === -1) {
+      return object[nestedPropertyName];
     } else {
-        var propertyName = nestedPropertyName.substring(0, dotIndex);
-        var nestedPropertyNames = nestedPropertyName.substring(dotIndex + 1);
+      let propertyName = nestedPropertyName.substring(0, dotIndex);
+      let nestedPropertyNames = nestedPropertyName.substring(dotIndex + 1);
 
-        return this.getNestedPropertyValue(object[propertyName], nestedPropertyNames);
+      return this.getNestedPropertyValue(object[propertyName], nestedPropertyNames);
     }
   }
 

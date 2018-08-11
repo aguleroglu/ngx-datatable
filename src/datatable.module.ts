@@ -39,7 +39,8 @@ import {
 import {
   ScrollbarHelper,
   DimensionsHelper,
-  ColumnChangesService
+  ColumnChangesService,
+  ExcelService
 } from './services';
 
 import { 
@@ -53,7 +54,8 @@ import {
   providers: [
     ScrollbarHelper,
     DimensionsHelper,
-    ColumnChangesService
+    ColumnChangesService,
+    ExcelService
   ],
   entryComponents: [
     TemplateComponent
