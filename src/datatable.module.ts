@@ -42,6 +42,10 @@ import {
   ColumnChangesService
 } from './services';
 
+import { 
+  TemplateComponent 
+} from './utils';
+
 @NgModule({
   imports: [
     CommonModule
@@ -50,6 +54,9 @@ import {
     ScrollbarHelper,
     DimensionsHelper,
     ColumnChangesService
+  ],
+  entryComponents: [
+    TemplateComponent
   ],
   declarations: [
     DataTableFooterTemplateDirective,
@@ -81,6 +88,7 @@ import {
     DatatableFooterDirective,
     DatatableGroupHeaderTemplateDirective,
     DataTableSummaryRowComponent,
+    TemplateComponent
   ],
   exports: [
     DatatableComponent,

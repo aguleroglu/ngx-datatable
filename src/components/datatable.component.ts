@@ -3,13 +3,13 @@ import {
   HostListener, ContentChildren, OnInit, QueryList, AfterViewInit,
   HostBinding, ContentChild, TemplateRef, IterableDiffer,
   DoCheck, KeyValueDiffers, KeyValueDiffer, ViewEncapsulation,
-  ChangeDetectionStrategy, ChangeDetectorRef, SkipSelf, OnDestroy
+  ChangeDetectionStrategy, ChangeDetectorRef, SkipSelf, OnDestroy, ComponentFactoryResolver, Injector
 } from '@angular/core';
 
 import {
   forceFillColumnWidths, adjustColumnWidths, sortRows,
   setColumnDefaults, throttleable, translateTemplates,
-  groupRowsByParents, optionalGetterForProp
+  groupRowsByParents, optionalGetterForProp, TemplateComponent
 } from '../utils';
 import { ScrollbarHelper, DimensionsHelper, ColumnChangesService } from '../services';
 import { ColumnMode, SortType, SelectionType, TableColumn, ContextmenuType } from '../types';
@@ -750,17 +750,25 @@ export class DatatableComponent implements OnInit, DoCheck, AfterViewInit {
   _columnTemplates: QueryList<DataTableColumnDirective>;
   _subscriptions: Subscription[] = [];
 
+  _resolver: ComponentFactoryResolver;
+  _injector: Injector;
+
   constructor(
     @SkipSelf() private scrollbarHelper: ScrollbarHelper,
     @SkipSelf() private dimensionsHelper: DimensionsHelper,
     private cd: ChangeDetectorRef,
     element: ElementRef,
     differs: KeyValueDiffers,
-    private columnChangesService: ColumnChangesService) {
+    private columnChangesService: ColumnChangesService,
+    resolver: ComponentFactoryResolver, 
+    injector: Injector) {
 
     // get ref to elm for measuring
     this.element = element.nativeElement;
     this.rowDiffer = differs.find({}).create();
+
+    this._resolver = resolver;
+    this._injector = injector;
   }
 
   /**
@@ -1270,13 +1278,11 @@ export class DatatableComponent implements OnInit, DoCheck, AfterViewInit {
                 propValue = this.getNestedPropertyValue(row, prop);
             }
 
-            r[column.name] = (typeof propValue === 'boolean') ? (propValue ? 'Yes' : 'No') : propValue;
-
-            // if (column.cellTemplate) {
-            //     r[column.name] = this.getRenderedTemplateText(column.cellTemplate, propValue, row, resolver, injector);
-            // } else {
-            //     r[column.name] = (typeof propValue === 'boolean') ? (propValue ? 'Yes' : 'No') : propValue;
-            // }
+            if (column.cellTemplate) {
+                r[column.name] = this.getRenderedTemplateText(column.cellTemplate, propValue, row);
+            } else {
+                r[column.name] = (typeof propValue === 'boolean') ? (propValue ? 'Yes' : 'No') : propValue;
+            }
         });
 
         return r;
@@ -1287,16 +1293,16 @@ export class DatatableComponent implements OnInit, DoCheck, AfterViewInit {
     return rows;
   }
 
-  // getRenderedTemplateText(template, value, row, resolver: ComponentFactoryResolver, injector: Injector) {
-  //   const factory = resolver.resolveComponentFactory(TemplateComponent);
-  //   const component = factory.create(injector);
+  getRenderedTemplateText(template, value, row) {
+    const factory = this._resolver.resolveComponentFactory(TemplateComponent);
+    const component = factory.create(this._injector);
 
-  //   component.instance.template = template;
-  //   component.instance.context = { value: value, row: row };
-  //   component.changeDetectorRef.detectChanges();
+    component.instance.template = template;
+    component.instance.context = { value: value, row: row };
+    component.changeDetectorRef.detectChanges();
 
-  //   return component.location.nativeElement.textContent.trim();
-  // }
+    return component.location.nativeElement.textContent.trim();
+  }
 
   getNestedPropertyValue(object: any, nestedPropertyName: string): any {
     var dotIndex = nestedPropertyName.indexOf(".");
