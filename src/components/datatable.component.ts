@@ -1313,7 +1313,7 @@ export class DatatableComponent implements OnInit, DoCheck, AfterViewInit {
       let propertyName = nestedPropertyName.substring(0, dotIndex);
       let nestedPropertyNames = nestedPropertyName.substring(dotIndex + 1);
 
-      let value = object[nestedPropertyName];
+      let value = object[propertyName];
 
       if (value === undefined) {
         return '';
