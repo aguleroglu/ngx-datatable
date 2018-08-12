@@ -517,6 +517,12 @@ export class DatatableComponent implements OnInit, DoCheck, AfterViewInit {
     useBom: true
   };
 
+  @Input() exportAllData: boolean = false;
+
+  @Input() exportAllEndpoint: any = undefined;
+  @Input() exportAllDataColumns: any = undefined;
+  @Input() exportAllQuery: any = undefined;
+
   /**
    * Body was scrolled typically in a `scrollbarV:true` scenario.
    */
@@ -1240,20 +1246,34 @@ export class DatatableComponent implements OnInit, DoCheck, AfterViewInit {
     this.pageSizeChange.emit(event);
   }
 
-  onExport(event: any) {
-    const rows: any[] = this.getDataRowsForExport();
-
-    if(event.type === 'CSV') {
-      return new Angular5Csv(rows, this.exportTitle, this.exportOptions);
-    } else if(event.type === 'XLSX') {
-      return this.excelService.exportAsExcelFile(rows, this.exportTitle);
-    } else {
-      return new Angular5Csv(rows, this.exportTitle, this.exportOptions);      
-    }
+  onExport(event: any): any {
+    this.exportAllData ? 
+      this.getDataRowsForExportFromService(event) 
+      : this.getDataRowsForExportFromTable(event);
   }
 
-  getDataRowsForExport(): any {
-    const columns: TableColumn[] = this._internalColumns;
+  getDataRowsForExportFromService(event: any): any {
+    if (this.exportAllEndpoint === undefined || this.exportAllQuery === undefined) {
+      return null;
+    }
+
+    if (this.exportAllQuery.hasOwnProperty('limit')) {
+      delete this.exportAllQuery['limit'];
+    }
+
+    if (this.exportAllQuery.hasOwnProperty('skip')) {
+      delete this.exportAllQuery['skip'];
+    }
+
+    this.exportAllEndpoint.find(this.exportAllQuery).subscribe(res => {
+      this.getDataRowsForExportFromTable(event, this.exportAllDataColumns, res);
+    }, err => {
+      return null;
+    });
+  }
+
+  getDataRowsForExportFromTable(event: any, dataColumns: any = this._internalColumns, dataRows: any = this._internalRows): any {
+    const columns: TableColumn[] = dataColumns;
     const headers =
         columns
             .map((column: TableColumn) => column.name)
@@ -1261,7 +1281,7 @@ export class DatatableComponent implements OnInit, DoCheck, AfterViewInit {
 
     this.exportOptions.headers = headers;
 
-    const rows: any[] = this._internalRows.map((row) => {
+    const rows: any[] = dataRows.map((row) => {
         let r = {};
 
         columns.forEach((column) => {
@@ -1284,7 +1304,7 @@ export class DatatableComponent implements OnInit, DoCheck, AfterViewInit {
         return r;
     });
 
-    return rows;
+    this.exportData(event, rows);
   }
 
   getRenderedTemplateText(template: any, value: any, row: any): any {
@@ -1320,6 +1340,20 @@ export class DatatableComponent implements OnInit, DoCheck, AfterViewInit {
       } else {
         return this.getNestedPropertyValue(value, nestedPropertyNames);
       }
+    }
+  }
+
+  exportData(event, rows): any {
+    if (rows === null) {
+      return;
+    }
+
+    if(event.type === 'CSV') {
+      return new Angular5Csv(rows, this.exportTitle, this.exportOptions);
+    } else if(event.type === 'XLSX') {
+      return this.excelService.exportAsExcelFile(rows, this.exportTitle);
+    } else {
+      return new Angular5Csv(rows, this.exportTitle, this.exportOptions);      
     }
   }
 
