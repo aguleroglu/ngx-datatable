@@ -204,10 +204,11 @@ var DatatableComponent = /** @class */ (function () {
             showTitle: false,
             useBom: true
         };
-        this.exportAllData = false;
-        this.exportAllEndpoint = undefined;
-        this.exportAllDataColumns = undefined;
-        this.exportAllQuery = undefined;
+        this.exportType = 'Table';
+        this.exportDataEndpoint = undefined;
+        this.exportDataColumns = undefined;
+        this.exportQuery = undefined;
+        this.exportDataFunction = undefined;
         /**
          * Body was scrolled typically in a `scrollbarV:true` scenario.
          */
@@ -955,23 +956,36 @@ var DatatableComponent = /** @class */ (function () {
         this.pageSizeChange.emit(event);
     };
     DatatableComponent.prototype.onExport = function (event) {
-        this.exportAllData ?
+        this.exportType == 'Endpoint' ?
             this.getDataRowsForExportFromService(event)
-            : this.getDataRowsForExportFromTable(event);
+            : this.exportType == 'Function' ?
+                this.getDataRowsForExportFromFunction(event)
+                : this.getDataRowsForExportFromTable(event);
+    };
+    DatatableComponent.prototype.getDataRowsForExportFromFunction = function (event) {
+        var _this = this;
+        if (this.exportDataFunction === undefined) {
+            return;
+        }
+        this.exportDataFunction.subscribe(function (rows) {
+            _this.getDataRowsForExportFromTable(event, _this.exportDataColumns, rows);
+        }, function (err) {
+            return;
+        });
     };
     DatatableComponent.prototype.getDataRowsForExportFromService = function (event) {
         var _this = this;
-        if (this.exportAllEndpoint === undefined || this.exportAllQuery === undefined) {
+        if (this.exportDataEndpoint === undefined || this.exportQuery === undefined) {
             return;
         }
-        if (this.exportAllQuery.hasOwnProperty('limit')) {
-            delete this.exportAllQuery['limit'];
+        if (this.exportQuery.hasOwnProperty('limit')) {
+            delete this.exportQuery['limit'];
         }
-        if (this.exportAllQuery.hasOwnProperty('skip')) {
-            delete this.exportAllQuery['skip'];
+        if (this.exportQuery.hasOwnProperty('skip')) {
+            delete this.exportQuery['skip'];
         }
-        this.exportAllEndpoint.find(this.exportAllQuery).subscribe(function (res) {
-            _this.getDataRowsForExportFromTable(event, _this.exportAllDataColumns, res);
+        this.exportDataEndpoint.find(this.exportQuery).subscribe(function (rows) {
+            _this.getDataRowsForExportFromTable(event, _this.exportDataColumns, rows);
         }, function (err) {
             return;
         });
@@ -1245,20 +1259,24 @@ var DatatableComponent = /** @class */ (function () {
     ], DatatableComponent.prototype, "exportOptions", void 0);
     __decorate([
         core_1.Input(),
-        __metadata("design:type", Boolean)
-    ], DatatableComponent.prototype, "exportAllData", void 0);
+        __metadata("design:type", String)
+    ], DatatableComponent.prototype, "exportType", void 0);
     __decorate([
         core_1.Input(),
         __metadata("design:type", Object)
-    ], DatatableComponent.prototype, "exportAllEndpoint", void 0);
+    ], DatatableComponent.prototype, "exportDataEndpoint", void 0);
     __decorate([
         core_1.Input(),
         __metadata("design:type", Object)
-    ], DatatableComponent.prototype, "exportAllDataColumns", void 0);
+    ], DatatableComponent.prototype, "exportDataColumns", void 0);
     __decorate([
         core_1.Input(),
         __metadata("design:type", Object)
-    ], DatatableComponent.prototype, "exportAllQuery", void 0);
+    ], DatatableComponent.prototype, "exportQuery", void 0);
+    __decorate([
+        core_1.Input(),
+        __metadata("design:type", Object)
+    ], DatatableComponent.prototype, "exportDataFunction", void 0);
     __decorate([
         core_1.Output(),
         __metadata("design:type", core_1.EventEmitter)

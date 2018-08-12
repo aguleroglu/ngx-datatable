@@ -248,10 +248,11 @@ export declare class DatatableComponent implements OnInit, DoCheck, AfterViewIni
     summaryPosition: string;
     exportTitle: string;
     exportOptions: any;
-    exportAllData: boolean;
-    exportAllEndpoint: any;
-    exportAllDataColumns: any;
-    exportAllQuery: any;
+    exportType: string;
+    exportDataEndpoint: any;
+    exportDataColumns: any;
+    exportQuery: any;
+    exportDataFunction: any;
     /**
      * Body was scrolled typically in a `scrollbarV:true` scenario.
      */
@@ -514,6 +515,7 @@ export declare class DatatableComponent implements OnInit, DoCheck, AfterViewIni
     onTreeAction(event: any): void;
     pageSizeChanged(event: any): void;
     onExport(event: any): any;
+    getDataRowsForExportFromFunction(event: any): any;
     getDataRowsForExportFromService(event: any): any;
     getDataRowsForExportFromTable(event: any, dataColumns?: any, dataRows?: any): any;
     getRenderedTemplateText(template: any, value: any, row: any): any;
