@@ -1003,12 +1003,24 @@ var DatatableComponent = /** @class */ (function () {
     DatatableComponent.prototype.getNestedPropertyValue = function (object, nestedPropertyName) {
         var dotIndex = nestedPropertyName.indexOf('.');
         if (dotIndex === -1) {
-            return object[nestedPropertyName];
+            var value = object[nestedPropertyName];
+            if (value === undefined) {
+                return '';
+            }
+            else {
+                return value;
+            }
         }
         else {
             var propertyName = nestedPropertyName.substring(0, dotIndex);
             var nestedPropertyNames = nestedPropertyName.substring(dotIndex + 1);
-            return this.getNestedPropertyValue(object[propertyName], nestedPropertyNames);
+            var value = object[propertyName];
+            if (value === undefined) {
+                return '';
+            }
+            else {
+                return this.getNestedPropertyValue(value, nestedPropertyNames);
+            }
         }
     };
     DatatableComponent.prototype.ngOnDestroy = function () {

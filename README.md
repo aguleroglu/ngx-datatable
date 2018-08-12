@@ -1,7 +1,5 @@
 # ngx-datatable
-[![Code Climate](https://codeclimate.com/github/sercanuste/ngx-datatable/badges/gpa.svg)](https://codeclimate.com/github/sercanuste/ngx-datatable)
 [![Build Status](https://travis-ci.org/sercanuste/ngx-datatable.svg?branch=master)](https://travis-ci.org/sercanuste/ngx-datatable)
-[![Test Coverage](https://codeclimate.com/github/sercanuste/ngx-datatable/badges/coverage.svg)](https://codeclimate.com/sercanuste/swimlane/ngx-datatable/coverage)
 [![npm version](https://badge.fury.io/js/%40sercanuste%2Fngx-datatable.svg)](https://badge.fury.io/js/%40sercanuste%2Fngx-datatable)
 
 `ngx-datatable` is an Angular component for presenting large and complex data.  It has all the features you would expect from any other table but in a light package with _no external dependencies_. The table was designed to be extremely flexible and light; it doesn't make any assumptions about your data or how you: filter, sort or page it.
