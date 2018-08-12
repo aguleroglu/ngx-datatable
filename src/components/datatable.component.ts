@@ -1254,7 +1254,7 @@ export class DatatableComponent implements OnInit, DoCheck, AfterViewInit {
 
   getDataRowsForExportFromService(event: any): any {
     if (this.exportAllEndpoint === undefined || this.exportAllQuery === undefined) {
-      return null;
+      return;
     }
 
     if (this.exportAllQuery.hasOwnProperty('limit')) {
@@ -1265,10 +1265,10 @@ export class DatatableComponent implements OnInit, DoCheck, AfterViewInit {
       delete this.exportAllQuery['skip'];
     }
 
-    this.exportAllEndpoint.find(this.exportAllQuery).subscribe(res => {
+    this.exportAllEndpoint.find(this.exportAllQuery).subscribe((res: any) => {
       this.getDataRowsForExportFromTable(event, this.exportAllDataColumns, res);
-    }, err => {
-      return null;
+    }, (err: any) => {
+      return;
     });
   }
 
@@ -1281,7 +1281,7 @@ export class DatatableComponent implements OnInit, DoCheck, AfterViewInit {
 
     this.exportOptions.headers = headers;
 
-    const rows: any[] = dataRows.map((row) => {
+    const rows: any[] = dataRows.map((row: any) => {
         let r = {};
 
         columns.forEach((column) => {
@@ -1343,7 +1343,7 @@ export class DatatableComponent implements OnInit, DoCheck, AfterViewInit {
     }
   }
 
-  exportData(event, rows): any {
+  exportData(event: any, rows: any): any {
     if (rows === null) {
       return;
     }

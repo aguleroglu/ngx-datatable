@@ -204,6 +204,10 @@ var DatatableComponent = /** @class */ (function () {
             showTitle: false,
             useBom: true
         };
+        this.exportAllData = false;
+        this.exportAllEndpoint = undefined;
+        this.exportAllDataColumns = undefined;
+        this.exportAllQuery = undefined;
         /**
          * Body was scrolled typically in a `scrollbarV:true` scenario.
          */
@@ -951,25 +955,37 @@ var DatatableComponent = /** @class */ (function () {
         this.pageSizeChange.emit(event);
     };
     DatatableComponent.prototype.onExport = function (event) {
-        var rows = this.getDataRowsForExport();
-        if (event.type === 'CSV') {
-            return new Angular5_csv_1.Angular5Csv(rows, this.exportTitle, this.exportOptions);
-        }
-        else if (event.type === 'XLSX') {
-            return this.excelService.exportAsExcelFile(rows, this.exportTitle);
-        }
-        else {
-            return new Angular5_csv_1.Angular5Csv(rows, this.exportTitle, this.exportOptions);
-        }
+        this.exportAllData ?
+            this.getDataRowsForExportFromService(event)
+            : this.getDataRowsForExportFromTable(event);
     };
-    DatatableComponent.prototype.getDataRowsForExport = function () {
+    DatatableComponent.prototype.getDataRowsForExportFromService = function (event) {
         var _this = this;
-        var columns = this._internalColumns;
+        if (this.exportAllEndpoint === undefined || this.exportAllQuery === undefined) {
+            return;
+        }
+        if (this.exportAllQuery.hasOwnProperty('limit')) {
+            delete this.exportAllQuery['limit'];
+        }
+        if (this.exportAllQuery.hasOwnProperty('skip')) {
+            delete this.exportAllQuery['skip'];
+        }
+        this.exportAllEndpoint.find(this.exportAllQuery).subscribe(function (res) {
+            _this.getDataRowsForExportFromTable(event, _this.exportAllDataColumns, res);
+        }, function (err) {
+            return;
+        });
+    };
+    DatatableComponent.prototype.getDataRowsForExportFromTable = function (event, dataColumns, dataRows) {
+        var _this = this;
+        if (dataColumns === void 0) { dataColumns = this._internalColumns; }
+        if (dataRows === void 0) { dataRows = this._internalRows; }
+        var columns = dataColumns;
         var headers = columns
             .map(function (column) { return column.name; })
             .filter(function (e) { return e; }); // remove column without name (i.e. falsy value)
         this.exportOptions.headers = headers;
-        var rows = this._internalRows.map(function (row) {
+        var rows = dataRows.map(function (row) {
             var r = {};
             columns.forEach(function (column) {
                 if (!column.name) {
@@ -990,7 +1006,7 @@ var DatatableComponent = /** @class */ (function () {
             });
             return r;
         });
-        return rows;
+        this.exportData(event, rows);
     };
     DatatableComponent.prototype.getRenderedTemplateText = function (template, value, row) {
         var factory = this.resolver.resolveComponentFactory(utils_1.TemplateComponent);
@@ -1021,6 +1037,20 @@ var DatatableComponent = /** @class */ (function () {
             else {
                 return this.getNestedPropertyValue(value, nestedPropertyNames);
             }
+        }
+    };
+    DatatableComponent.prototype.exportData = function (event, rows) {
+        if (rows === null) {
+            return;
+        }
+        if (event.type === 'CSV') {
+            return new Angular5_csv_1.Angular5Csv(rows, this.exportTitle, this.exportOptions);
+        }
+        else if (event.type === 'XLSX') {
+            return this.excelService.exportAsExcelFile(rows, this.exportTitle);
+        }
+        else {
+            return new Angular5_csv_1.Angular5Csv(rows, this.exportTitle, this.exportOptions);
         }
     };
     DatatableComponent.prototype.ngOnDestroy = function () {
@@ -1213,6 +1243,22 @@ var DatatableComponent = /** @class */ (function () {
         core_1.Input(),
         __metadata("design:type", Object)
     ], DatatableComponent.prototype, "exportOptions", void 0);
+    __decorate([
+        core_1.Input(),
+        __metadata("design:type", Boolean)
+    ], DatatableComponent.prototype, "exportAllData", void 0);
+    __decorate([
+        core_1.Input(),
+        __metadata("design:type", Object)
+    ], DatatableComponent.prototype, "exportAllEndpoint", void 0);
+    __decorate([
+        core_1.Input(),
+        __metadata("design:type", Object)
+    ], DatatableComponent.prototype, "exportAllDataColumns", void 0);
+    __decorate([
+        core_1.Input(),
+        __metadata("design:type", Object)
+    ], DatatableComponent.prototype, "exportAllQuery", void 0);
     __decorate([
         core_1.Output(),
         __metadata("design:type", core_1.EventEmitter)

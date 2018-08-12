@@ -7,7 +7,6 @@ import { DataTableColumnDirective } from './columns';
 import { DatatableRowDetailDirective } from './row-detail';
 import { DatatableFooterDirective } from './footer';
 import { DataTableHeaderComponent } from './header';
-import { Angular5Csv } from 'angular5-csv/Angular5-csv';
 import { BehaviorSubject, Subscription } from 'rxjs';
 export declare class DatatableComponent implements OnInit, DoCheck, AfterViewInit {
     private scrollbarHelper;
@@ -249,6 +248,10 @@ export declare class DatatableComponent implements OnInit, DoCheck, AfterViewIni
     summaryPosition: string;
     exportTitle: string;
     exportOptions: any;
+    exportAllData: boolean;
+    exportAllEndpoint: any;
+    exportAllDataColumns: any;
+    exportAllQuery: any;
     /**
      * Body was scrolled typically in a `scrollbarV:true` scenario.
      */
@@ -510,10 +513,12 @@ export declare class DatatableComponent implements OnInit, DoCheck, AfterViewIni
      */
     onTreeAction(event: any): void;
     pageSizeChanged(event: any): void;
-    onExport(event: any): void | Angular5Csv;
-    getDataRowsForExport(): any;
+    onExport(event: any): any;
+    getDataRowsForExportFromService(event: any): any;
+    getDataRowsForExportFromTable(event: any, dataColumns?: any, dataRows?: any): any;
     getRenderedTemplateText(template: any, value: any, row: any): any;
     getNestedPropertyValue(object: any, nestedPropertyName: string): any;
+    exportData(event: any, rows: any): any;
     ngOnDestroy(): void;
     /**
      * listen for changes to input bindings of all DataTableColumnDirective and
