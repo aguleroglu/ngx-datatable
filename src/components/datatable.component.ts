@@ -517,11 +517,13 @@ export class DatatableComponent implements OnInit, DoCheck, AfterViewInit {
     useBom: true
   };
 
-  @Input() exportAllData: boolean = false;
+  @Input() exportType: string = 'Table';
 
-  @Input() exportAllEndpoint: any = undefined;
-  @Input() exportAllDataColumns: any = undefined;
-  @Input() exportAllQuery: any = undefined;
+  @Input() exportDataEndpoint: any = undefined;
+  @Input() exportDataColumns: any = undefined;
+  @Input() exportQuery: any = undefined;
+
+  @Input() exportDataFunction: any = undefined;
 
   /**
    * Body was scrolled typically in a `scrollbarV:true` scenario.
@@ -1247,26 +1249,40 @@ export class DatatableComponent implements OnInit, DoCheck, AfterViewInit {
   }
 
   onExport(event: any): any {
-    this.exportAllData ? 
+    this.exportType == 'Endpoint' ? 
       this.getDataRowsForExportFromService(event) 
-      : this.getDataRowsForExportFromTable(event);
+      : this.exportType == 'Function' ?
+        this.getDataRowsForExportFromFunction(event)
+        : this.getDataRowsForExportFromTable(event);
   }
 
-  getDataRowsForExportFromService(event: any): any {
-    if (this.exportAllEndpoint === undefined || this.exportAllQuery === undefined) {
+  getDataRowsForExportFromFunction(event: any): any {
+    if (this.exportDataFunction === undefined) {
       return;
     }
 
-    if (this.exportAllQuery.hasOwnProperty('limit')) {
-      delete this.exportAllQuery['limit'];
+    this.exportDataFunction.subscribe((rows: any) => {
+      this.getDataRowsForExportFromTable(event, this.exportDataColumns, rows);
+    }, (err: any) => {
+      return;
+    });
+  }
+
+  getDataRowsForExportFromService(event: any): any {
+    if (this.exportDataEndpoint === undefined || this.exportQuery === undefined) {
+      return;
     }
 
-    if (this.exportAllQuery.hasOwnProperty('skip')) {
-      delete this.exportAllQuery['skip'];
+    if (this.exportQuery.hasOwnProperty('limit')) {
+      delete this.exportQuery['limit'];
     }
 
-    this.exportAllEndpoint.find(this.exportAllQuery).subscribe((res: any) => {
-      this.getDataRowsForExportFromTable(event, this.exportAllDataColumns, res);
+    if (this.exportQuery.hasOwnProperty('skip')) {
+      delete this.exportQuery['skip'];
+    }
+
+    this.exportDataEndpoint.find(this.exportQuery).subscribe((rows: any) => {
+      this.getDataRowsForExportFromTable(event, this.exportDataColumns, rows);
     }, (err: any) => {
       return;
     });
