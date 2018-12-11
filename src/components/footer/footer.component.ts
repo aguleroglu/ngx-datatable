@@ -30,7 +30,7 @@ import { DatatableFooterDirective } from './footer.directive';
       <select
         (change)="onPageSizeChanged($event)" 
         class="limit-select">
-        <option *ngFor="let item of limitOptions" value="{{ item.id }}">{{ item.text }}</option>
+        <option *ngFor="let item of limitOptions" [selected]="item.id == pageSize" value="{{ item.id }}">{{ item.text }}</option>
       </select>
       <datatable-pager *ngIf="!footerTemplate"
         [pagerLeftArrowIcon]="pagerLeftArrowIcon"
