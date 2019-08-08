@@ -4,7 +4,7 @@ var ghpages = require('gh-pages');
 var dir = path.resolve(path.join(__dirname, '../', 'dist'));
 ghpages.publish(dir, {
   user: {
-    name: 'Sercan Uste',
+    name: 'Anil Guleroglu',
     email: 'developer@swimlane.com'
   },
   message: '(deploy): CI',

@@ -38706,7 +38706,7 @@ var NgxDatatableModule = /** @class */ (function () {
                 services_1.ScrollbarHelper,
                 services_1.DimensionsHelper,
                 services_1.ColumnChangesService,
-                services_1.ExcelService
+                { provide: service_config_1.EXCEL_SERVICE, useClass: services_1.ExcelService }
             ],
             entryComponents: [
                 utils_1.TemplateComponent

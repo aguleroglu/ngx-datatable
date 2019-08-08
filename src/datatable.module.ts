@@ -57,7 +57,7 @@ import { ServiceConfig, EXCEL_SERVICE } from './services/service.config';
     ScrollbarHelper,
     DimensionsHelper,
     ColumnChangesService,
-    ExcelService
+    { provide: EXCEL_SERVICE, useClass: ExcelService }
   ],
   entryComponents: [
     TemplateComponent
