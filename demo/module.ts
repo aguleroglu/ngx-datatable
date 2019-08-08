@@ -71,6 +71,7 @@ import { SummaryRowSimpleComponent } from './summary/summary-row-simple.componen
 import { SummaryRowCustomTemplateComponent } from './summary/summary-row-custom-template.component';
 import { SummaryRowServerPagingComponent } from './summary/summary-row-server-paging.component';
 import { SummaryRowInlineHtmlComponent } from './summary/summary-row-inline-html.component';
+import { MyExcelService } from './myexcel.service';
 
 @NgModule({
   declarations: [
@@ -126,7 +127,9 @@ import { SummaryRowInlineHtmlComponent } from './summary/summary-row-inline-html
     SummaryRowServerPagingComponent,
     SummaryRowInlineHtmlComponent,
   ],
-  imports: [BrowserModule, NgxDatatableModule],
+  imports: [BrowserModule, NgxDatatableModule.forRoot({
+    excelService:MyExcelService
+  })],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

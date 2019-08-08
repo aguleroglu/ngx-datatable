@@ -11,7 +11,7 @@ import {
   setColumnDefaults, throttleable, translateTemplates,
   groupRowsByParents, optionalGetterForProp, TemplateComponent
 } from '../utils';
-import { ScrollbarHelper, DimensionsHelper, ColumnChangesService, ExcelService } from '../services';
+import { ScrollbarHelper, DimensionsHelper, ColumnChangesService, ExcelService, IExcelService } from '../services';
 import { ColumnMode, SortType, SelectionType, TableColumn, ContextmenuType } from '../types';
 import { DataTableBodyComponent } from './body';
 import { DatatableGroupHeaderDirective } from './body/body-group-header.directive';
@@ -22,6 +22,7 @@ import { DataTableHeaderComponent } from './header';
 import { MouseEvent } from '../events';
 import { Angular5Csv } from 'angular5-csv/Angular5-csv';
 import { BehaviorSubject, Subscription } from 'rxjs';
+import { EXCEL_SERVICE } from '../services/service.config';
 
 @Component({
   selector: 'ngx-datatable',
@@ -757,6 +758,7 @@ export class DatatableComponent implements OnInit, DoCheck, AfterViewInit {
   _columns: TableColumn[];
   _columnTemplates: QueryList<DataTableColumnDirective>;
   _subscriptions: Subscription[] = [];
+  excelService:IExcelService;
 
   constructor(
     @SkipSelf() private scrollbarHelper: ScrollbarHelper,
@@ -765,13 +767,13 @@ export class DatatableComponent implements OnInit, DoCheck, AfterViewInit {
     element: ElementRef,
     differs: KeyValueDiffers,
     private columnChangesService: ColumnChangesService,
-    private excelService: ExcelService,
     private resolver: ComponentFactoryResolver, 
     private injector: Injector) {
 
     // get ref to elm for measuring
     this.element = element.nativeElement;
     this.rowDiffer = differs.find({}).create();
+    this.excelService = injector.get(EXCEL_SERVICE);
   }
 
   /**
@@ -1367,7 +1369,7 @@ export class DatatableComponent implements OnInit, DoCheck, AfterViewInit {
     if(event.type === 'CSV') {
       return new Angular5Csv(rows, this.exportTitle, this.exportOptions);
     } else if(event.type === 'XLSX') {
-      return this.excelService.exportAsExcelFile(rows, this.exportTitle);
+      return this.excelService.exportAsExcelFile(rows, this.exportTitle,null);
     } else {
       return new Angular5Csv(rows, this.exportTitle, this.exportOptions);      
     }

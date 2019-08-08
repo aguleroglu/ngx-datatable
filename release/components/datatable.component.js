@@ -32,13 +32,13 @@ var footer_1 = require("./footer");
 var header_1 = require("./header");
 var Angular5_csv_1 = require("angular5-csv/Angular5-csv");
 var rxjs_1 = require("rxjs");
+var service_config_1 = require("../services/service.config");
 var DatatableComponent = /** @class */ (function () {
-    function DatatableComponent(scrollbarHelper, dimensionsHelper, cd, element, differs, columnChangesService, excelService, resolver, injector) {
+    function DatatableComponent(scrollbarHelper, dimensionsHelper, cd, element, differs, columnChangesService, resolver, injector) {
         this.scrollbarHelper = scrollbarHelper;
         this.dimensionsHelper = dimensionsHelper;
         this.cd = cd;
         this.columnChangesService = columnChangesService;
-        this.excelService = excelService;
         this.resolver = resolver;
         this.injector = injector;
         /**
@@ -256,6 +256,7 @@ var DatatableComponent = /** @class */ (function () {
         // get ref to elm for measuring
         this.element = element.nativeElement;
         this.rowDiffer = differs.find({}).create();
+        this.excelService = injector.get(service_config_1.EXCEL_SERVICE);
     }
     Object.defineProperty(DatatableComponent.prototype, "rows", {
         /**
@@ -1061,7 +1062,7 @@ var DatatableComponent = /** @class */ (function () {
             return new Angular5_csv_1.Angular5Csv(rows, this.exportTitle, this.exportOptions);
         }
         else if (event.type === 'XLSX') {
-            return this.excelService.exportAsExcelFile(rows, this.exportTitle);
+            return this.excelService.exportAsExcelFile(rows, this.exportTitle, null);
         }
         else {
             return new Angular5_csv_1.Angular5Csv(rows, this.exportTitle, this.exportOptions);
@@ -1423,7 +1424,6 @@ var DatatableComponent = /** @class */ (function () {
             core_1.ElementRef,
             core_1.KeyValueDiffers,
             services_1.ColumnChangesService,
-            services_1.ExcelService,
             core_1.ComponentFactoryResolver,
             core_1.Injector])
     ], DatatableComponent);

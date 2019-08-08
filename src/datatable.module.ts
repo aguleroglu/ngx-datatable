@@ -1,4 +1,4 @@
-import { NgModule } from '@angular/core';
+import { NgModule, ModuleWithProviders } from '@angular/core';
 import { CommonModule } from '@angular/common';
 
 import {
@@ -43,9 +43,11 @@ import {
   ExcelService
 } from './services';
 
-import { 
-  TemplateComponent 
+import {
+  TemplateComponent
 } from './utils';
+
+import { ServiceConfig, EXCEL_SERVICE } from './services/service.config';
 
 @NgModule({
   imports: [
@@ -108,4 +110,15 @@ import {
     DatatableGroupHeaderTemplateDirective
   ]
 })
-export class NgxDatatableModule { }
+export class NgxDatatableModule {
+
+  static forRoot(config?: ServiceConfig): ModuleWithProviders {
+    return {
+      ngModule: NgxDatatableModule,
+      providers: [
+        { provide: EXCEL_SERVICE, useClass: config && config.excelService || ExcelService }
+      ]
+    };
+  }
+
+}

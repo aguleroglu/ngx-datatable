@@ -15,7 +15,7 @@ var EXCEL_EXTENSION = '.xlsx';
 var ExcelService = /** @class */ (function () {
     function ExcelService() {
     }
-    ExcelService.prototype.exportAsExcelFile = function (json, excelFileName) {
+    ExcelService.prototype.exportAsExcelFile = function (json, excelFileName, opt) {
         var worksheet = XLSX.utils.json_to_sheet(json);
         var workbook = { Sheets: { 'data': worksheet }, SheetNames: ['data'] };
         XLSX.writeFile(workbook, excelFileName + EXCEL_EXTENSION);

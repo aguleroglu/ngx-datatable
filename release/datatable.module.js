@@ -12,10 +12,20 @@ var components_1 = require("./components");
 var directives_1 = require("./directives");
 var services_1 = require("./services");
 var utils_1 = require("./utils");
+var service_config_1 = require("./services/service.config");
 var NgxDatatableModule = /** @class */ (function () {
     function NgxDatatableModule() {
     }
-    NgxDatatableModule = __decorate([
+    NgxDatatableModule_1 = NgxDatatableModule;
+    NgxDatatableModule.forRoot = function (config) {
+        return {
+            ngModule: NgxDatatableModule_1,
+            providers: [
+                { provide: service_config_1.EXCEL_SERVICE, useClass: config && config.excelService || services_1.ExcelService }
+            ]
+        };
+    };
+    NgxDatatableModule = NgxDatatableModule_1 = __decorate([
         core_1.NgModule({
             imports: [
                 common_1.CommonModule
@@ -79,6 +89,7 @@ var NgxDatatableModule = /** @class */ (function () {
         })
     ], NgxDatatableModule);
     return NgxDatatableModule;
+    var NgxDatatableModule_1;
 }());
 exports.NgxDatatableModule = NgxDatatableModule;
 //# sourceMappingURL=datatable.module.js.map

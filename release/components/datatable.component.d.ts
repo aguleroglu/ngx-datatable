@@ -1,5 +1,5 @@
 import { ElementRef, EventEmitter, OnInit, QueryList, AfterViewInit, DoCheck, KeyValueDiffers, KeyValueDiffer, ChangeDetectorRef, ComponentFactoryResolver, Injector } from '@angular/core';
-import { ScrollbarHelper, DimensionsHelper, ColumnChangesService, ExcelService } from '../services';
+import { ScrollbarHelper, DimensionsHelper, ColumnChangesService, IExcelService } from '../services';
 import { ColumnMode, SortType, SelectionType, TableColumn, ContextmenuType } from '../types';
 import { DataTableBodyComponent } from './body';
 import { DatatableGroupHeaderDirective } from './body/body-group-header.directive';
@@ -13,7 +13,6 @@ export declare class DatatableComponent implements OnInit, DoCheck, AfterViewIni
     private dimensionsHelper;
     private cd;
     private columnChangesService;
-    private excelService;
     private resolver;
     private injector;
     /**
@@ -399,7 +398,8 @@ export declare class DatatableComponent implements OnInit, DoCheck, AfterViewIni
     _columns: TableColumn[];
     _columnTemplates: QueryList<DataTableColumnDirective>;
     _subscriptions: Subscription[];
-    constructor(scrollbarHelper: ScrollbarHelper, dimensionsHelper: DimensionsHelper, cd: ChangeDetectorRef, element: ElementRef, differs: KeyValueDiffers, columnChangesService: ColumnChangesService, excelService: ExcelService, resolver: ComponentFactoryResolver, injector: Injector);
+    excelService: IExcelService;
+    constructor(scrollbarHelper: ScrollbarHelper, dimensionsHelper: DimensionsHelper, cd: ChangeDetectorRef, element: ElementRef, differs: KeyValueDiffers, columnChangesService: ColumnChangesService, resolver: ComponentFactoryResolver, injector: Injector);
     /**
      * Lifecycle hook that is called after data-bound
      * properties of a directive are initialized.
