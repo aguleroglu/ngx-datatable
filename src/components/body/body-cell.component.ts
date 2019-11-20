@@ -8,7 +8,7 @@ import { Keys } from '../../utils';
 import { SortDirection } from '../../types';
 import { TableColumn } from '../../types/table-column.type';
 import { MouseEvent, KeyboardEvent } from '../../events';
-import { ContentChild } from '@angular/core/src/metadata/di';
+import { ContentChild } from '@angular/core';
 
 export type TreeStatus = 'collapsed' | 'expanded' | 'loading' | 'disabled';
 
@@ -179,8 +179,8 @@ export class DataTableBodyCellComponent implements DoCheck, OnDestroy {
 
   @Output() treeAction: EventEmitter<any> = new EventEmitter();
 
-  @ViewChild('cellTemplate', { read: ViewContainerRef }) cellTemplate: ViewContainerRef;
-  @ViewChild('cellHoverTemplate', { read: ViewContainerRef }) cellHoverTemplate: ViewContainerRef;
+  @ViewChild('cellTemplate', { read: ViewContainerRef,static:false }) cellTemplate: ViewContainerRef;
+  @ViewChild('cellHoverTemplate', { read: ViewContainerRef,static:false }) cellHoverTemplate: ViewContainerRef;
 
   @HostBinding('class')
   get columnCssClasses(): any {

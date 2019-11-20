@@ -1,18 +1,18 @@
 /**
- * ngx-datatable v"1.0.20" (https://github.com/sercanuste/ngx-datatable)
+ * ngx-datatable v"1.0.22" (https://github.com/sercanuste/ngx-datatable)
  * Copyright 2016
  * Licensed under MIT
  */
 (function webpackUniversalModuleDefinition(root, factory) {
 	if(typeof exports === 'object' && typeof module === 'object')
-		module.exports = factory(require("@angular/common"), require("@angular/core"), require("@angular/platform-browser"), require("rxjs"), require("rxjs/operators"));
+		module.exports = factory(require("@angular/common"), require("@angular/core"), require("rxjs"), require("rxjs/operators"));
 	else if(typeof define === 'function' && define.amd)
-		define("ngxDatatable", ["@angular/common", "@angular/core", "@angular/platform-browser", "rxjs", "rxjs/operators"], factory);
+		define("ngxDatatable", ["@angular/common", "@angular/core", "rxjs", "rxjs/operators"], factory);
 	else if(typeof exports === 'object')
-		exports["ngxDatatable"] = factory(require("@angular/common"), require("@angular/core"), require("@angular/platform-browser"), require("rxjs"), require("rxjs/operators"));
+		exports["ngxDatatable"] = factory(require("@angular/common"), require("@angular/core"), require("rxjs"), require("rxjs/operators"));
 	else
-		root["ngxDatatable"] = factory(root["@angular/common"], root["@angular/core"], root["@angular/platform-browser"], root["rxjs"], root["rxjs/operators"]);
-})(typeof self !== 'undefined' ? self : this, function(__WEBPACK_EXTERNAL_MODULE__angular_common__, __WEBPACK_EXTERNAL_MODULE__angular_core__, __WEBPACK_EXTERNAL_MODULE__angular_platform_browser__, __WEBPACK_EXTERNAL_MODULE_rxjs__, __WEBPACK_EXTERNAL_MODULE_rxjs_operators__) {
+		root["ngxDatatable"] = factory(root["@angular/common"], root["@angular/core"], root["rxjs"], root["rxjs/operators"]);
+})(typeof self !== 'undefined' ? self : this, function(__WEBPACK_EXTERNAL_MODULE__angular_common__, __WEBPACK_EXTERNAL_MODULE__angular_core__, __WEBPACK_EXTERNAL_MODULE_rxjs__, __WEBPACK_EXTERNAL_MODULE_rxjs_operators__) {
 return /******/ (function(modules) { // webpackBootstrap
 /******/ 	// The module cache
 /******/ 	var installedModules = {};
@@ -33841,11 +33841,11 @@ var DataTableBodyCellComponent = /** @class */ (function () {
         __metadata("design:type", core_1.EventEmitter)
     ], DataTableBodyCellComponent.prototype, "treeAction", void 0);
     __decorate([
-        core_1.ViewChild('cellTemplate', { read: core_1.ViewContainerRef }),
+        core_1.ViewChild('cellTemplate', { read: core_1.ViewContainerRef, static: false }),
         __metadata("design:type", core_1.ViewContainerRef)
     ], DataTableBodyCellComponent.prototype, "cellTemplate", void 0);
     __decorate([
-        core_1.ViewChild('cellHoverTemplate', { read: core_1.ViewContainerRef }),
+        core_1.ViewChild('cellHoverTemplate', { read: core_1.ViewContainerRef, static: false }),
         __metadata("design:type", core_1.ViewContainerRef)
     ], DataTableBodyCellComponent.prototype, "cellHoverTemplate", void 0);
     __decorate([
@@ -34012,7 +34012,7 @@ var DatatableGroupHeaderDirective = /** @class */ (function () {
     ], DatatableGroupHeaderDirective.prototype, "rowHeight", void 0);
     __decorate([
         core_1.Input(),
-        core_1.ContentChild(body_group_header_template_directive_1.DatatableGroupHeaderTemplateDirective, { read: core_1.TemplateRef }),
+        core_1.ContentChild(body_group_header_template_directive_1.DatatableGroupHeaderTemplateDirective, { read: core_1.TemplateRef, static: false }),
         __metadata("design:type", core_1.TemplateRef)
     ], DatatableGroupHeaderDirective.prototype, "template", void 0);
     __decorate([
@@ -35210,7 +35210,7 @@ var DataTableBodyComponent = /** @class */ (function () {
         __metadata("design:type", core_1.EventEmitter)
     ], DataTableBodyComponent.prototype, "treeAction", void 0);
     __decorate([
-        core_1.ViewChild(scroller_component_1.ScrollerComponent),
+        core_1.ViewChild(scroller_component_1.ScrollerComponent, { static: false }),
         __metadata("design:type", scroller_component_1.ScrollerComponent)
     ], DataTableBodyComponent.prototype, "scroller", void 0);
     DataTableBodyComponent = __decorate([
@@ -35420,6 +35420,7 @@ var DataTableSelectionComponent = /** @class */ (function () {
         this.select = new core_1.EventEmitter();
     }
     DataTableSelectionComponent.prototype.selectRow = function (event, index, row) {
+        var _a;
         if (!this.selectEnabled)
             return;
         var chkbox = this.selectionType === types_1.SelectionType.checkbox;
@@ -35449,7 +35450,6 @@ var DataTableSelectionComponent = /** @class */ (function () {
         this.select.emit({
             selected: selected
         });
-        var _a;
     };
     DataTableSelectionComponent.prototype.onActivate = function (model, index) {
         var type = model.type, event = model.event, row = model.row;
@@ -35602,13 +35602,16 @@ __export(__webpack_require__("./src/components/body/summary/summary-row.componen
 
 "use strict";
 
-var __assign = (this && this.__assign) || Object.assign || function(t) {
-    for (var s, i = 1, n = arguments.length; i < n; i++) {
-        s = arguments[i];
-        for (var p in s) if (Object.prototype.hasOwnProperty.call(s, p))
-            t[p] = s[p];
-    }
-    return t;
+var __assign = (this && this.__assign) || function () {
+    __assign = Object.assign || function(t) {
+        for (var s, i = 1, n = arguments.length; i < n; i++) {
+            s = arguments[i];
+            for (var p in s) if (Object.prototype.hasOwnProperty.call(s, p))
+                t[p] = s[p];
+        }
+        return t;
+    };
+    return __assign.apply(this, arguments);
 };
 var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
@@ -35925,22 +35928,22 @@ var DataTableColumnDirective = /** @class */ (function () {
     ], DataTableColumnDirective.prototype, "summaryTemplate", void 0);
     __decorate([
         core_1.Input(),
-        core_1.ContentChild(column_cell_directive_1.DataTableColumnCellDirective, { read: core_1.TemplateRef }),
+        core_1.ContentChild(column_cell_directive_1.DataTableColumnCellDirective, { read: core_1.TemplateRef, static: false }),
         __metadata("design:type", core_1.TemplateRef)
     ], DataTableColumnDirective.prototype, "cellTemplate", void 0);
     __decorate([
         core_1.Input(),
-        core_1.ContentChild(column_cell_hover_directive_1.DataTableColumnCellHoverDirective, { read: core_1.TemplateRef }),
+        core_1.ContentChild(column_cell_hover_directive_1.DataTableColumnCellHoverDirective, { read: core_1.TemplateRef, static: false }),
         __metadata("design:type", core_1.TemplateRef)
     ], DataTableColumnDirective.prototype, "cellHoverTemplate", void 0);
     __decorate([
         core_1.Input(),
-        core_1.ContentChild(column_header_directive_1.DataTableColumnHeaderDirective, { read: core_1.TemplateRef }),
+        core_1.ContentChild(column_header_directive_1.DataTableColumnHeaderDirective, { read: core_1.TemplateRef, static: false }),
         __metadata("design:type", core_1.TemplateRef)
     ], DataTableColumnDirective.prototype, "headerTemplate", void 0);
     __decorate([
         core_1.Input(),
-        core_1.ContentChild(tree_directive_1.DataTableColumnCellTreeToggle, { read: core_1.TemplateRef }),
+        core_1.ContentChild(tree_directive_1.DataTableColumnCellTreeToggle, { read: core_1.TemplateRef, static: false }),
         __metadata("design:type", core_1.TemplateRef)
     ], DataTableColumnDirective.prototype, "treeToggleTemplate", void 0);
     DataTableColumnDirective = __decorate([
@@ -36023,13 +36026,16 @@ exports.DataTableColumnCellTreeToggle = DataTableColumnCellTreeToggle;
 
 "use strict";
 
-var __assign = (this && this.__assign) || Object.assign || function(t) {
-    for (var s, i = 1, n = arguments.length; i < n; i++) {
-        s = arguments[i];
-        for (var p in s) if (Object.prototype.hasOwnProperty.call(s, p))
-            t[p] = s[p];
-    }
-    return t;
+var __assign = (this && this.__assign) || function () {
+    __assign = Object.assign || function(t) {
+        for (var s, i = 1, n = arguments.length; i < n; i++) {
+            s = arguments[i];
+            for (var p in s) if (Object.prototype.hasOwnProperty.call(s, p))
+                t[p] = s[p];
+        }
+        return t;
+    };
+    return __assign.apply(this, arguments);
 };
 var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
@@ -36929,6 +36935,7 @@ var DatatableComponent = /** @class */ (function () {
      * Toggle all row selection
      */
     DatatableComponent.prototype.onHeaderSelect = function (event) {
+        var _a, _b;
         if (this.selectAllRowsOnPage) {
             // before we splice, chk if we currently have all selected
             var first = this.bodyComponent.indexes.first;
@@ -36954,7 +36961,6 @@ var DatatableComponent = /** @class */ (function () {
         this.select.emit({
             selected: this.selected
         });
-        var _a, _b;
     };
     /**
      * A row was selected from body
@@ -37403,23 +37409,23 @@ var DatatableComponent = /** @class */ (function () {
         __metadata("design:paramtypes", [core_1.QueryList])
     ], DatatableComponent.prototype, "columnTemplates", null);
     __decorate([
-        core_1.ContentChild(row_detail_1.DatatableRowDetailDirective),
+        core_1.ContentChild(row_detail_1.DatatableRowDetailDirective, { static: false }),
         __metadata("design:type", row_detail_1.DatatableRowDetailDirective)
     ], DatatableComponent.prototype, "rowDetail", void 0);
     __decorate([
-        core_1.ContentChild(body_group_header_directive_1.DatatableGroupHeaderDirective),
+        core_1.ContentChild(body_group_header_directive_1.DatatableGroupHeaderDirective, { static: false }),
         __metadata("design:type", body_group_header_directive_1.DatatableGroupHeaderDirective)
     ], DatatableComponent.prototype, "groupHeader", void 0);
     __decorate([
-        core_1.ContentChild(footer_1.DatatableFooterDirective),
+        core_1.ContentChild(footer_1.DatatableFooterDirective, { static: false }),
         __metadata("design:type", footer_1.DatatableFooterDirective)
     ], DatatableComponent.prototype, "footer", void 0);
     __decorate([
-        core_1.ViewChild(body_1.DataTableBodyComponent),
+        core_1.ViewChild(body_1.DataTableBodyComponent, { static: false }),
         __metadata("design:type", body_1.DataTableBodyComponent)
     ], DatatableComponent.prototype, "bodyComponent", void 0);
     __decorate([
-        core_1.ViewChild(header_1.DataTableHeaderComponent),
+        core_1.ViewChild(header_1.DataTableHeaderComponent, { static: false }),
         __metadata("design:type", header_1.DataTableHeaderComponent)
     ], DatatableComponent.prototype, "headerComponent", void 0);
     __decorate([
@@ -37679,7 +37685,7 @@ var DatatableFooterDirective = /** @class */ (function () {
     ], DatatableFooterDirective.prototype, "pagerNextIcon", void 0);
     __decorate([
         core_1.Input(),
-        core_1.ContentChild(footer_template_directive_1.DataTableFooterTemplateDirective, { read: core_1.TemplateRef }),
+        core_1.ContentChild(footer_template_directive_1.DataTableFooterTemplateDirective, { read: core_1.TemplateRef, static: false }),
         __metadata("design:type", core_1.TemplateRef)
     ], DatatableFooterDirective.prototype, "template", void 0);
     DatatableFooterDirective = __decorate([
@@ -38167,13 +38173,16 @@ exports.DataTableHeaderCellComponent = DataTableHeaderCellComponent;
 
 "use strict";
 
-var __assign = (this && this.__assign) || Object.assign || function(t) {
-    for (var s, i = 1, n = arguments.length; i < n; i++) {
-        s = arguments[i];
-        for (var p in s) if (Object.prototype.hasOwnProperty.call(s, p))
-            t[p] = s[p];
-    }
-    return t;
+var __assign = (this && this.__assign) || function () {
+    __assign = Object.assign || function(t) {
+        for (var s, i = 1, n = arguments.length; i < n; i++) {
+            s = arguments[i];
+            for (var p in s) if (Object.prototype.hasOwnProperty.call(s, p))
+                t[p] = s[p];
+        }
+        return t;
+    };
+    return __assign.apply(this, arguments);
 };
 var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
@@ -38649,7 +38658,7 @@ var DatatableRowDetailDirective = /** @class */ (function () {
     ], DatatableRowDetailDirective.prototype, "rowHeight", void 0);
     __decorate([
         core_1.Input(),
-        core_1.ContentChild(row_detail_template_directive_1.DatatableRowDetailTemplateDirective, { read: core_1.TemplateRef }),
+        core_1.ContentChild(row_detail_template_directive_1.DatatableRowDetailTemplateDirective, { read: core_1.TemplateRef, static: false }),
         __metadata("design:type", core_1.TemplateRef)
     ], DatatableRowDetailDirective.prototype, "template", void 0);
     __decorate([
@@ -38697,6 +38706,7 @@ var NgxDatatableModule = /** @class */ (function () {
             ]
         };
     };
+    var NgxDatatableModule_1;
     NgxDatatableModule = NgxDatatableModule_1 = __decorate([
         core_1.NgModule({
             imports: [
@@ -38761,7 +38771,6 @@ var NgxDatatableModule = /** @class */ (function () {
         })
     ], NgxDatatableModule);
     return NgxDatatableModule;
-    var NgxDatatableModule_1;
 }());
 exports.NgxDatatableModule = NgxDatatableModule;
 
@@ -39108,7 +39117,7 @@ var __param = (this && this.__param) || function (paramIndex, decorator) {
 Object.defineProperty(exports, "__esModule", { value: true });
 var core_1 = __webpack_require__("@angular/core");
 var draggable_directive_1 = __webpack_require__("./src/directives/draggable.directive.ts");
-var platform_browser_1 = __webpack_require__("@angular/platform-browser");
+var common_1 = __webpack_require__("@angular/common");
 var OrderableDirective = /** @class */ (function () {
     function OrderableDirective(differs, document) {
         this.document = document;
@@ -39250,7 +39259,7 @@ var OrderableDirective = /** @class */ (function () {
     ], OrderableDirective.prototype, "draggables", void 0);
     OrderableDirective = __decorate([
         core_1.Directive({ selector: '[orderable]' }),
-        __param(1, core_1.Inject(platform_browser_1.DOCUMENT)),
+        __param(1, core_1.Inject(common_1.DOCUMENT)),
         __metadata("design:paramtypes", [core_1.KeyValueDiffers, Object])
     ], OrderableDirective);
     return OrderableDirective;
@@ -39643,7 +39652,7 @@ var __param = (this && this.__param) || function (paramIndex, decorator) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 var core_1 = __webpack_require__("@angular/core");
-var platform_browser_1 = __webpack_require__("@angular/platform-browser");
+var common_1 = __webpack_require__("@angular/common");
 /**
  * Gets the width of the scrollbar.  Nesc for windows
  * http://stackoverflow.com/a/13382873/888165
@@ -39670,7 +39679,7 @@ var ScrollbarHelper = /** @class */ (function () {
     };
     ScrollbarHelper = __decorate([
         core_1.Injectable(),
-        __param(0, core_1.Inject(platform_browser_1.DOCUMENT)),
+        __param(0, core_1.Inject(common_1.DOCUMENT)),
         __metadata("design:paramtypes", [Object])
     ], ScrollbarHelper);
     return ScrollbarHelper;
@@ -41011,10 +41020,10 @@ function groupRowsByParents(rows, from, to) {
             }
             return arr;
         }, []);
-        for (var i = 0; i < l; i++) {
+        for (var i = 0; i < l; i++) { // make TreeNode objects for each item
             nodeById[to(rows[i])] = new TreeNode(rows[i]);
         }
-        for (var i = 0; i < l; i++) {
+        for (var i = 0; i < l; i++) { // link all TreeNode objects
             node = nodeById[to(rows[i])];
             var parent_1 = 0;
             var fromValue = from(node.row);
@@ -41097,13 +41106,6 @@ module.exports = __WEBPACK_EXTERNAL_MODULE__angular_common__;
 /***/ (function(module, exports) {
 
 module.exports = __WEBPACK_EXTERNAL_MODULE__angular_core__;
-
-/***/ }),
-
-/***/ "@angular/platform-browser":
-/***/ (function(module, exports) {
-
-module.exports = __WEBPACK_EXTERNAL_MODULE__angular_platform_browser__;
 
 /***/ }),
 

@@ -25,6 +25,7 @@ var NgxDatatableModule = /** @class */ (function () {
             ]
         };
     };
+    var NgxDatatableModule_1;
     NgxDatatableModule = NgxDatatableModule_1 = __decorate([
         core_1.NgModule({
             imports: [
@@ -89,7 +90,6 @@ var NgxDatatableModule = /** @class */ (function () {
         })
     ], NgxDatatableModule);
     return NgxDatatableModule;
-    var NgxDatatableModule_1;
 }());
 exports.NgxDatatableModule = NgxDatatableModule;
 //# sourceMappingURL=datatable.module.js.map

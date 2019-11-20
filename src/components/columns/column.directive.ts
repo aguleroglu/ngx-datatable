@@ -35,19 +35,19 @@ export class DataTableColumnDirective implements OnChanges {
   @Input() summaryTemplate: TemplateRef<any>;
 
   @Input()
-  @ContentChild(DataTableColumnCellDirective, { read: TemplateRef })
+  @ContentChild(DataTableColumnCellDirective, { read: TemplateRef,static:false })
   cellTemplate: TemplateRef<any>;
   
   @Input()
-  @ContentChild(DataTableColumnCellHoverDirective, { read: TemplateRef })
+  @ContentChild(DataTableColumnCellHoverDirective, { read: TemplateRef,static:false })
   cellHoverTemplate: TemplateRef<any>;
 
   @Input()
-  @ContentChild(DataTableColumnHeaderDirective, { read: TemplateRef })
+  @ContentChild(DataTableColumnHeaderDirective, { read: TemplateRef,static:false })
   headerTemplate: TemplateRef<any>;
 
   @Input()
-  @ContentChild(DataTableColumnCellTreeToggle, { read: TemplateRef })
+  @ContentChild(DataTableColumnCellTreeToggle, { read: TemplateRef,static:false })
   treeToggleTemplate: TemplateRef<any>;
   private isFirstChange = true;
   
