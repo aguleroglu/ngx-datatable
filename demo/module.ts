@@ -127,7 +127,9 @@ import { MyExcelService } from './myexcel.service';
     SummaryRowServerPagingComponent,
     SummaryRowInlineHtmlComponent,
   ],
-  imports: [BrowserModule, NgxDatatableModule],
+  imports: [BrowserModule, NgxDatatableModule.forRoot({
+    excelService:MyExcelService
+  })],
   bootstrap: [AppComponent]
 })
 export class AppModule { }
