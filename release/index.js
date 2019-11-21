@@ -1,5 +1,5 @@
 /**
- * ngx-datatable v"1.0.22" (https://github.com/sercanuste/ngx-datatable)
+ * ngx-datatable v"1.0.24" (https://github.com/sercanuste/ngx-datatable)
  * Copyright 2016
  * Licensed under MIT
  */
@@ -80,7 +80,7 @@ return /******/ (function(modules) { // webpackBootstrap
 /************************************************************************/
 /******/ ({
 
-/***/ "./node_modules/angular5-csv/Angular5-csv.js":
+/***/ "./node_modules/angular5-csv/dist/Angular5-csv.js":
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -101,6 +101,7 @@ var CsvConfigConsts = (function () {
     CsvConfigConsts.DEFAULT_USE_BOM = true;
     CsvConfigConsts.DEFAULT_HEADER = [];
     CsvConfigConsts.DEFAULT_NO_DOWNLOAD = false;
+    CsvConfigConsts.DEFAULT_NULL_TO_EMPTY_STRING = false;
     return CsvConfigConsts;
 }());
 exports.CsvConfigConsts = CsvConfigConsts;
@@ -114,7 +115,8 @@ exports.ConfigDefaults = {
     title: CsvConfigConsts.DEFAULT_TITLE,
     useBom: CsvConfigConsts.DEFAULT_USE_BOM,
     headers: CsvConfigConsts.DEFAULT_HEADER,
-    noDownload: CsvConfigConsts.DEFAULT_NO_DOWNLOAD
+    noDownload: CsvConfigConsts.DEFAULT_NO_DOWNLOAD,
+    nullToEmptyString: CsvConfigConsts.DEFAULT_NULL_TO_EMPTY_STRING
 };
 var Angular5Csv = (function () {
     function Angular5Csv(DataJSON, filename, options) {
@@ -166,12 +168,12 @@ var Angular5Csv = (function () {
      * Create Headers
      */
     Angular5Csv.prototype.getHeaders = function () {
+        var _this = this;
         if (this._options.headers.length > 0) {
-            var row = "";
-            for (var _i = 0, _a = this._options.headers; _i < _a.length; _i++) {
-                var column = _a[_i];
-                row += column + this._options.fieldSeparator;
-            }
+            var headers = this._options.headers;
+            var row = headers.reduce(function (headerRow, header) {
+                return headerRow + header + _this._options.fieldSeparator;
+            }, '');
             row = row.slice(0, -1);
             this.csv += row + CsvConfigConsts.EOL;
         }
@@ -183,7 +185,7 @@ var Angular5Csv = (function () {
         for (var i = 0; i < this.data.length; i++) {
             var row = "";
             for (var index in this.data[i]) {
-                row += this.formartData(this.data[i][index]) + this._options.fieldSeparator;
+                row += this.formatData(this.data[i][index]) + this._options.fieldSeparator;
             }
             row = row.slice(0, -1);
             this.csv += row + CsvConfigConsts.EOL;
@@ -193,7 +195,7 @@ var Angular5Csv = (function () {
      * Format Data
      * @param {any} data
      */
-    Angular5Csv.prototype.formartData = function (data) {
+    Angular5Csv.prototype.formatData = function (data) {
         if (this._options.decimalseparator === 'locale' && Angular5Csv.isFloat(data)) {
             return data.toLocaleString();
         }
@@ -204,6 +206,12 @@ var Angular5Csv = (function () {
             data = data.replace(/"/g, '""');
             if (this._options.quoteStrings || data.indexOf(',') > -1 || data.indexOf('\n') > -1 || data.indexOf('\r') > -1) {
                 data = this._options.quoteStrings + data + this._options.quoteStrings;
+            }
+            return data;
+        }
+        if (this._options.nullToEmptyString) {
+            if (data === null) {
+                return data = '';
             }
             return data;
         }
@@ -36060,7 +36068,7 @@ var columns_1 = __webpack_require__("./src/components/columns/index.ts");
 var row_detail_1 = __webpack_require__("./src/components/row-detail/index.ts");
 var footer_1 = __webpack_require__("./src/components/footer/index.ts");
 var header_1 = __webpack_require__("./src/components/header/index.ts");
-var Angular5_csv_1 = __webpack_require__("./node_modules/angular5-csv/Angular5-csv.js");
+var Angular5_csv_1 = __webpack_require__("./node_modules/angular5-csv/dist/Angular5-csv.js");
 var rxjs_1 = __webpack_require__("rxjs");
 var service_config_1 = __webpack_require__("./src/services/service.config.ts");
 var DatatableComponent = /** @class */ (function () {
